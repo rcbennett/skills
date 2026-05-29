@@ -1,0 +1,4 @@
+interface:
+  display_name: "Do Quality Work"
+  short_description: "Assign owners, reviews, and quality protocols"
+  default_prompt: "Use $do-quality-work to assign task owners, decide whether review is needed, apply the right protocols, verify the work, and report protocol improvement opportunities."
