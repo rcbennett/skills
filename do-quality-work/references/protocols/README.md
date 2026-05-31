@@ -15,8 +15,13 @@ How the TerraFlo team actually works. Protocols are binding — Atlas enforces t
 | [design-first.md](design-first.md) | Every change considers system design; important changes earn a design review. Built for flexibility, maintainability, and bounded cost at scale. |
 | [cross-platform-parity.md](cross-platform-parity.md) | Features land on all platforms that can carry them. Divergence is intentional, documented, and justified. |
 | [model-selection.md](model-selection.md) | Pick the right model like you pick the right team member. The reviewer is always a different model than the author. |
+| [red-team.md](red-team.md) | High-risk work gets attacked for exploit paths, operational failures, hidden assumptions, missing rollback, weak observability, and abuse cases before it is trusted. |
+| [steelman.md](steelman.md) | Serious alternatives are rejected only after their strongest coherent case, win conditions, and decision-changing evidence are understood. |
+| [pre-mortem.md](pre-mortem.md) | Launches, deploys, migrations, and fragile changes assume future failure first, then define prevention, detection, rollback, and owners. |
+| [council-review.md](council-review.md) | Important decisions get the whole active team reviewing the current artifact, synthesizing weaknesses and opportunities into a forward plan with at least 75% agreement. |
+| [decision-record.md](decision-record.md) | Material choices leave a durable record of context, alternatives, rationale, consequences, evidence, and revisit triggers. |
 | [verifying-claims.md](verifying-claims.md) | Subagent findings are claims, not facts. Triangulate "X is missing/broken" before propagating or acting. Lived experience trumps audit findings. |
-| [verification-toolchain.md](verification-toolchain.md) | What I can test myself without Rob (CloudFunctions npm, web admin npm, SharedCore gradle). What I can't (Xcode builds, on-device behavior). |
+| [verification-toolchain.md](verification-toolchain.md) | What I can test myself without Rob, when to run it, and how to balance verification overhead against progress by choosing micro-slices, capability packets, or broader checkpoints based on risk. |
 
 ## Meta-rules
 

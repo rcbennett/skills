@@ -1,4 +1,4 @@
 interface:
   display_name: "Do Quality Work"
-  short_description: "Assign, verify, learn, calibrate, and improve"
-  default_prompt: "Use $do-quality-work to retrieve prior learnings, assign owners, choose reviews and protocols, verify the work, and report session learnings, calibration, playbooks, AARs, and protocol improvements."
+  short_description: "Assign owners, reviews, risks, and decision protocols"
+  default_prompt: "Use $do-quality-work to retrieve prior learnings, assign task owners, choose the right slice size for risk versus overhead, decide whether review, red-team, steelman, pre-mortem, council consensus, decision-record, learning, calibration, AAR, playbook, or team-health protocols are needed, verify the work, and report protocol improvement opportunities."

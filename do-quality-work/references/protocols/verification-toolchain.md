@@ -1,6 +1,16 @@
 # Protocol: Verification Toolchain — What I Can Test Without Rob
 
-**Principle:** Confidence in changes comes from running them. Atlas should test as much as possible without waiting on Rob. Where I can't, I say so plainly and propose what Rob would need to do to close the gap.
+**Principle:** Confidence in changes comes from running them, but verification has real time, usage, and attention costs. Atlas should test as much as possible without waiting on Rob, choose the slice size that makes the verification overhead worthwhile, and say plainly where a gap remains.
+
+## Slice size and verification cost
+
+Before committing to a work plan or rerunning an expensive verification loop, choose the right work unit:
+
+- **Micro-slice:** Use when risk is high, blast radius is uncertain, reversibility is poor, the work is destructive, security/auth/PII/billing/safety is involved, or one behavior must be isolated to debug a failure.
+- **Capability packet:** Use when related low- or medium-risk changes share a domain, fixture set, rollback path, reviewer group, and verification envelope. Prefer this when full evidence generation, docs rollups, broad builds, or review cycles would dominate the value of one tiny change.
+- **Broader checkpoint:** Use when the goal is release/deploy/cutover readiness or when several capability packets need one final confidence pass.
+
+Run targeted checks while iterating inside a packet. Run broad test suites, generated evidence, docs rollups, credential scans, review cycles, and commits at packet/checkpoint boundaries unless a new risk justifies doing them sooner. Do not batch unrelated work just to reduce ceremony; every packet must stay reviewable, debuggable, reversible, and explainable.
 
 ## Currently working
 
@@ -59,6 +69,7 @@ After every commit that touches a verifiable surface:
 - Run the relevant test/build command **before** announcing the commit to Rob.
 - If the command fails, **roll back the commit and investigate** before proceeding. Do not pile a fix-the-fix commit on top of a broken main.
 - If the command succeeds, mention it in the message ("CloudFunctions tests still 70/70 green").
+- For non-trivial work, state the slice-size choice when reporting: micro-slice, capability packet, or broader checkpoint, with the risk/overhead reason.
 
 For Swift edits while builds are blocked:
 - Acknowledge the gap in the commit body.
