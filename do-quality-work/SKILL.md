@@ -1,6 +1,6 @@
 ---
 name: do-quality-work
-description: Apply project quality protocols to choose the right review, design, verification, learning, parity, model-selection, claim-checking, team-assignment, review-cycle, and reporting workflow for non-trivial work. Use when Codex is asked to do high-quality work, implement or review code, write or review plans, make design decisions, verify claims, assess subagent findings, handle cross-platform product work, choose reviewers or models, internally decide whether a review cycle is needed, identify which team members are doing which tasks, report protocols used, or decide what validation is required before calling work complete.
+description: Apply project quality protocols to choose the right review, design, verification, learning retrieval, learning capture, After Action Review, persona calibration, playbook, team-health, parity, model-selection, claim-checking, team-assignment, review-cycle, session-learning, and reporting workflow for non-trivial work. Use when Codex is asked to do high-quality work, implement or review code, write or review plans, make design decisions, verify claims, assess subagent findings, handle cross-platform product work, choose reviewers or models, internally decide whether a review cycle is needed, identify which team members are doing which tasks, report protocols used, assess end-of-session learnings, improve team member personas, or decide what validation is required before calling work complete.
 ---
 
 # Do Quality Work
@@ -12,6 +12,10 @@ Treat quality as an execution protocol, not a final polish pass. At task intake,
 When a project has its own `management/protocols/` directory, inspect and prefer those live project protocols. Otherwise use the bundled protocol references in `references/protocols/`.
 
 Every output must include who did which task, which protocols were used, when multiple team members were used, and whether the protocols exposed any improvement opportunities.
+
+Before meaningful work, retrieve relevant persona memories, calibration, playbooks, and project decisions so prior learning shapes the next attempt.
+
+At the end of each prompt-level work session, assess the session as a whole for durable learnings. A work session is completing the instruction in the user's prompt, not each individual task executed inside that session. Report the learning assessment in the final session summary and update the responsible persona's memories when the learning should persist.
 
 Do not wait for the user to explicitly ask for review. Internally assess whether the task requires a plan review, design review, code review, security/safety review, domain review, parity review, or verification review, then run the applicable cycle when the environment allows.
 
@@ -45,7 +49,12 @@ Apply these protocols based on task shape. More than one may apply.
 
 | Task condition | Apply | What to do |
 | --- | --- | --- |
-| Any non-trivial task | `learning.md` | Capture what was learned, where it belongs, and whether it invalidates prior assumptions. |
+| Any meaningful work with prior project or persona context | `learning-retrieval.md` | Retrieve relevant persona memories, calibration, playbooks, decisions, and stale-memory risks before starting. |
+| Any non-trivial work session | `learning.md` | At session end, assess what was learned from completing the prompt, where it belongs, whether it invalidates prior assumptions, and whether persona memories need updates. |
+| Any failure, surprise, regression, false blocker, missed requirement, milestone, repeated rework, or protocol gap | `after-action-review.md` | Run a blameless AAR that turns expected-vs-actual evidence into updates, owners, and memory/protocol/playbook changes. |
+| Any review, task assignment, Talent Planning, repeated false positive, missed issue, noisy review, or assignment-fit problem | `persona-calibration.md` | Update evidence about persona judgment quality and use it for future routing and reviewer selection. |
+| Any repeated tactic, diagnostic sequence, deploy/review recipe, or reusable lesson | `playbook-library.md` | Promote the tactic into a project or persona playbook with verification and failure modes. |
+| Talent Planning, executive retrospectives, repeated collaboration failures, or staffing changes | `team-health.md` | Assess whether team conditions support learning: safety, dependability, clarity, meaning, impact, load, and learning culture. |
 | Any claim that something is missing, broken, dead, absent, or impossible | `verifying-claims.md` | Require exact search evidence and triangulate before acting or reporting it as fact. |
 | Any implementation with 3+ tasks, new files, multi-layer changes, or subagent execution | `plan-review.md` | Review the plan before execution with a different persona and different model. |
 | Any production code, logic change, new file, refactor, deploy, security rule, auth, PII, public API, or domain logic change | `code-review.md` | Get independent review after implementation. Match reviewer domain to the change. |
@@ -63,14 +72,18 @@ If a protocol would add ceremony without improving the result, note why it does 
 1. Classify the task using the protocol selector.
 2. Internally assess whether a review cycle is needed. Use the task shape and protocol selector; do not depend on the user asking for review.
 3. Read the full referenced protocol files for every selected protocol when the task is non-trivial or the rule details matter.
-4. Inspect `management/personas/` when present and assign every task to the best-fit team member or group before work begins. If no current team member is a good fit and editing personas is in scope, use team-management guidance to create the missing persona first; otherwise mark the staffing gap clearly.
-5. If personas are relevant, use the appropriate team member lens while doing the work.
-6. Before implementation, apply design-first and plan-review gates when triggered.
-7. During implementation, verify negative claims before acting on them.
-8. After a cohesive implementation slice, run the relevant verification toolchain and code review gates when triggered. Time verification intelligently: use narrow checks while iterating, then broader checks before commit, push, deploy, or final completion claims.
-9. Before final response, capture durable learnings in the right place or state that no durable learning was found.
-10. Review the selected protocols themselves: note any ambiguity, missing trigger, weak verification path, or protocol gap discovered while working.
-11. Report only verified facts as facts; mark unverified review findings or blocked validation clearly.
+4. Use `learning-retrieval.md` before meaningful work when prior project context, personas, calibration, or playbooks may affect the session.
+5. Inspect `management/personas/` when present and assign every task to the best-fit team member or group before work begins. If no current team member is a good fit and editing personas is in scope, use team-management guidance to create the missing persona first; otherwise mark the staffing gap clearly.
+6. If personas are relevant, use the appropriate team member lens while doing the work.
+7. Before implementation, apply design-first and plan-review gates when triggered.
+8. During implementation, verify negative claims before acting on them.
+9. After a cohesive implementation slice, run the relevant verification toolchain and code review gates when triggered. Time verification intelligently: use narrow checks while iterating, then broader checks before commit, push, deploy, or final completion claims.
+10. Run an AAR when the session exposes a surprise, failure, repeated rework, missed requirement, false blocker, milestone lesson, or protocol gap.
+11. Update calibration when reviewer quality, owner fit, false positives, missed issues, or verification gaps change trust in a persona.
+12. Promote repeatable tactics into playbooks instead of leaving them buried in session summaries.
+13. At the end of the prompt-level work session, before final response, assess the session as a whole for durable learnings. Do not run this after every individual subtask unless the subtask is its own user prompt. Store learnings in the right place, including the responsible persona's memories when applicable, or state that no durable learning was found.
+14. Review the selected protocols themselves: note any ambiguity, missing trigger, weak verification path, or protocol gap discovered while working.
+15. Report only verified facts as facts; mark unverified review findings or blocked validation clearly.
 
 ## Review Cycle Assessment
 
@@ -98,6 +111,8 @@ Every final answer produced under this skill must include these items, scaled to
 - `Review cycle`: whether review was needed, which type was run, who reviewed or what role lens was used, and whether it was independent or internal.
 - `Protocols used`: list the protocols applied and what each contributed. If a normally relevant protocol was skipped, state why.
 - `Verification`: summarize tests, builds, reviews, searches, or manual checks performed, plus any blocked validation.
+- `Self-improvement updates`: summarize learning retrieval, AAR, calibration, playbook, team-health, and persona-memory updates that changed future behavior. Say none when none applied.
+- `Session learnings`: state what was learned across the completed prompt-level work session, where it was stored, and which persona memories were updated. If nothing durable was learned, say that explicitly.
 - `Protocol observations`: identify where the current protocols may need strengthening, clarification, or expansion. If no protocol issue was observed, say so briefly.
 - `Protocol update offer`: when a protocol improvement is identified, offer to update the affected protocol file or skill guidance.
 
@@ -107,7 +122,27 @@ Prefer a compact report for simple tasks and a short table for multi-task work.
 
 ### `learning.md`
 
-Use on every non-trivial task. Ask what was learned, where it belongs, and what prior belief it invalidates. Durable learnings belong in code comments, project docs, decisions, data structure docs, memory, personas, protocols, or conventions depending on type.
+Use at the end of every non-trivial work session. Ask what was learned from completing the user's prompt, where it belongs, which prior belief it invalidates, and whether the responsible persona's memories should be updated. Durable learnings belong in code comments, project docs, decisions, data structure docs, memory, persona memories, protocols, or conventions depending on type.
+
+### `learning-retrieval.md`
+
+Use before meaningful work when prior project context may affect quality. Retrieve relevant persona memories, calibration, playbooks, decisions, and stale-memory risks before starting, then close the loop at session end.
+
+### `after-action-review.md`
+
+Use when the result differed from the plan, a failure or surprise occurred, a milestone finished, or the same failure mode repeats. Convert expected-vs-actual evidence into action items and updates to persona memories, protocols, playbooks, or docs.
+
+### `persona-calibration.md`
+
+Use when review quality, owner fit, false positives, missed issues, noisy findings, or verification gaps change trust in a persona. Calibration informs future task assignment and reviewer selection.
+
+### `playbook-library.md`
+
+Use when a tactic becomes repeatable. Store validated recipes in project or persona playbooks with applicability, steps, verification, failure modes, and review cadence.
+
+### `team-health.md`
+
+Use during Talent Planning, executive retrospectives, repeated collaboration failures, staffing changes, or milestones to assess whether team conditions support learning and improvement.
 
 ### `code-review.md`
 
@@ -143,6 +178,11 @@ Full protocol source snapshots are available under [references/protocols](refere
 
 - [README.md](references/protocols/README.md)
 - [learning.md](references/protocols/learning.md)
+- [learning-retrieval.md](references/protocols/learning-retrieval.md)
+- [after-action-review.md](references/protocols/after-action-review.md)
+- [persona-calibration.md](references/protocols/persona-calibration.md)
+- [playbook-library.md](references/protocols/playbook-library.md)
+- [team-health.md](references/protocols/team-health.md)
 - [code-review.md](references/protocols/code-review.md)
 - [plan-review.md](references/protocols/plan-review.md)
 - [design-first.md](references/protocols/design-first.md)

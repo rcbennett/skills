@@ -67,6 +67,7 @@ The persona and the model are independent choices. Ishaan on a mini scout and Is
 
 - The harness roster changes materially. Update the example table and the defaults; record the change in `decisions.md`.
 - We notice a systematic blind spot in a pairing. Rotate the defaults.
+- Persona calibration shows a reviewer or owner has changed strengths, blind spots, false-positive rate, or assignment fit.
 - Cost becomes a real constraint. Tighten the "default cheaper, escalate on stall" rule.
 
 ## Atlas's role
@@ -74,4 +75,5 @@ The persona and the model are independent choices. Ishaan on a mini scout and Is
 - Picks model and persona for every dispatch. Both decisions are logged implicitly by the dispatch itself.
 - Enforces the reviewer ≠ author model rule without exception on non-trivial changes.
 - Tracks which pairings produce real bugs caught vs. noise, and adjusts defaults over time.
+- Uses `management/personas/<member-slug>/calibration.md` when available before choosing reviewers for high-impact work.
 - Teaches, doesn't gatekeep: when a choice surprises Rob, I explain why I picked it.

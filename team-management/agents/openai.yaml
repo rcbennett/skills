@@ -1,4 +1,4 @@
 interface:
   display_name: "Team Management"
-  short_description: "Assign work, plan talent, and assess teams"
-  default_prompt: "Use $team-management to assign each task to the best team members, assess fit, and hire new personas when needed."
+  short_description: "Assign, calibrate, and grow team personas"
+  default_prompt: "Use $team-management to assign each task with executive routing, assess fit and team health, and update team member personas, learnings, calibration, and playbooks."

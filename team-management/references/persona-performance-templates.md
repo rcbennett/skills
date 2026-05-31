@@ -10,7 +10,7 @@ Use these templates when the user wants a structured deliverable. Adapt headings
 
 ## Persona
 
-Store project personas as Markdown files in `management/personas/`.
+Store each project team member in `management/personas/<member-slug>/persona.md`.
 
 ```markdown
 ### <Role Label>
@@ -23,6 +23,74 @@ Store project personas as Markdown files in `management/personas/`.
 **Review Lens:**  
 **Risks:**  
 **Success Signals:**  
+**Learning Practices:**
+**Current Development Focus:**
+**Calibration Signals:**
+**Default Playbooks:**
+```
+
+## Member Directory
+
+```text
+management/personas/<member-slug>/
+  persona.md
+  learnings.md
+  calibration.md
+  playbooks/
+```
+
+Use `persona.md` as the canonical persona definition. Store durable member-specific lessons in `learnings.md` unless the project already uses a more specific learning-log convention inside the member directory. Store evidence about judgment quality and assignment fit in `calibration.md`. Store member-specific reusable tactics in `playbooks/`.
+
+## Learning Log
+
+```markdown
+# Learnings
+
+## <YYYY-MM-DD> - <Short lesson label>
+
+**Source/Evidence:**
+**Trigger:**
+**Lesson:**
+**Applies When:**
+**Avoid When:**
+**Behavior Change:**
+**Confidence:** low / medium / high
+**Supersedes:**
+**Persona Update Needed:** yes/no
+**Review Due:**
+```
+
+## Persona Calibration
+
+```markdown
+# Calibration
+
+## <YYYY-MM-DD> - <Session or review label>
+
+**Role in session:** owner / reviewer / advisor / executive
+**Evidence:**
+**Signal:** bug caught / bug missed / false positive / noisy review / strong assignment / weak assignment / verification gap
+**Impact:**
+**Adjustment:**
+**Promote to persona.md:** yes/no
+**Review Cadence:**
+```
+
+## Playbook
+
+```markdown
+# <Playbook title>
+
+**Owner:**
+**Use When:**
+**Do Not Use When:**
+**Inputs Needed:**
+**Steps:**
+**Verification:**
+**Failure Modes:**
+**Related Personas/Protocols:**
+**Last Reviewed:**
+**Review Cadence:**
 ```
 
 ## Research Log
@@ -50,6 +118,9 @@ Store project personas as Markdown files in `management/personas/`.
 | Risk management |  |  |  |
 | Learning velocity |  |  |  |
 | Team impact |  |  |  |
+| Learning capture and self-improvement |  |  |  |
+| Calibration trend and review signal quality |  |  |  |
+| Playbook retrieval and reuse |  |  |  |
 ```
 
 ## Improvement Plan
@@ -60,13 +131,13 @@ Store project personas as Markdown files in `management/personas/`.
 
 ## Task Assignment Plan
 
-Use this before execution. Every task must have an assigned team member or group.
+Use this before execution. Every task must have an assigned team member or group, and the executive persona should contribute the routing rationale.
 
-| Task | Assigned owner(s) | Why best fit | Expected output | Collaborators/reviewers | Gap or hiring decision |
-| --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |
+| Task | Executive routing rationale | Assigned owner(s) | Why best fit | Expected output | Collaborators/reviewers | Gap or hiring decision |
+| --- | --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |  |
 
-If no existing persona is a strong fit, create the needed persona in `management/personas/` before assigning the task.
+If no existing persona is a strong fit, create the needed member directory and `management/personas/<member-slug>/persona.md` before assigning the task.
 
 ## Talent Planning Review
 
@@ -77,21 +148,33 @@ Use this for an in-depth review of the current team and expansion needs.
 
 **Project Phase:**  
 **Goals Reviewed:**  
-**Current Roster Source:** `management/personas/`  
+**Current Roster Source:** `management/personas/*/persona.md`
 **Evidence Used:**  
 **Research Performed:**  
+**Executive Management Review:**
+**Team Health Check:**
 
-## Persona File Changes
+## Member Directory Changes
 
-| File | Change made | Reason |
+| Path | Change made | Reason |
 | --- | --- | --- |
-| `management/personas/` |  |  |
+| `management/personas/<member-slug>/persona.md` |  |  |
+| `management/personas/<member-slug>/learnings.md` |  |  |
+| `management/personas/<member-slug>/calibration.md` |  |  |
+| `management/personas/<member-slug>/playbooks/<slug>.md` |  |  |
+| `management/playbooks/<slug>.md` |  |  |
 
 ## Current Team Performance
 
 | Team member/persona | Mission | Overall assessment | Strengths | Gaps | Improvement actions |
 | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |
+
+## Calibration Summary
+
+| Team member/persona | Strong signals | Weak signals | Assignment/review adjustment | Persona update? |
+| --- | --- | --- | --- | --- |
+|  |  |  |  |  |
 
 ## Capability Coverage
 
@@ -112,4 +195,41 @@ Use this for an in-depth review of the current team and expansion needs.
 - Refocus:
 - Add:
 - Defer:
+```
+
+## Team Health Check
+
+```markdown
+# Team Health Check
+
+**Scope:**
+**Evidence:**
+
+| Dimension | Rating | Evidence | Action |
+| --- | --- | --- | --- |
+| Psychological safety |  |  |  |
+| Dependability |  |  |  |
+| Structure and clarity |  |  |  |
+| Meaning |  |  |  |
+| Impact |  |  |  |
+| Learning culture |  |  |  |
+| Load and focus |  |  |  |
+```
+
+## Executive Retrospective
+
+```markdown
+# Executive Retrospective
+
+**Scope:**
+**Evidence:**
+
+| Question | Finding | Action |
+| --- | --- | --- |
+| Did assignment quality improve outcomes? |  |  |
+| Did review routing catch useful issues without avoidable noise? |  |  |
+| Did members retrieve and apply prior learnings? |  |  |
+| Did calibration or playbooks change future routing? |  |  |
+| Did team health support improvement? |  |  |
+| Which memories, protocols, playbooks, or staffing decisions need updates? |  |  |
 ```

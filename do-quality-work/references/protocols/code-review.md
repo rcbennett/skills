@@ -36,6 +36,7 @@ Reviewers are briefed to check these in order:
 7. **Verification evidence.** Build output, test output, or an explicit "I couldn't verify X" from the author.
 8. **Docs sync.** `requirements.md`, `PROJECT_STATE.md`, `decisions.md`, `data_structures.md` updated where appropriate.
 9. **Learnings captured.** Per [learning.md](learning.md).
+10. **Calibration updated.** Per [persona-calibration.md](persona-calibration.md) when review quality changes trust in a persona.
 
 Reviewers also do the opposite job: catch unnecessary changes. Speculative abstractions, drive-by refactors, and scope creep get flagged for removal, not applause.
 
@@ -58,7 +59,8 @@ Authors don't perform agreement. They:
 - Address must-fix or argue it down with reasoning.
 - Take should-fix by default; decline with a reason in the PR/reply.
 - Treat consider items as optional.
-- Update persona files or `decisions.md` if the review surfaced a durable lesson.
+- Update persona memories or `decisions.md` if the review surfaced a durable lesson.
+- Update `calibration.md` when the review produced a real signal about reviewer quality, owner fit, false positives, missed issues, or noisy findings.
 
 Authors who reflexively "fix" everything a reviewer flags without thinking are as broken as authors who ignore feedback. Atlas watches for both.
 

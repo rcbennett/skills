@@ -4,7 +4,12 @@ How the TerraFlo team actually works. Protocols are binding — Atlas enforces t
 
 | Protocol | Purpose |
 |---|---|
-| [learning.md](learning.md) | Every team member learns from what they do; findings are captured, not lost. |
+| [learning-retrieval.md](learning-retrieval.md) | Prior lessons shape the next attempt; retrieve relevant persona memories, calibration, playbooks, and decisions before work starts. |
+| [learning.md](learning.md) | Every work session ends with a learning assessment; findings are captured in the right place, including persona memories. |
+| [after-action-review.md](after-action-review.md) | Surprises, failures, milestones, and repeated rework become blameless expected-vs-actual reviews with concrete changes. |
+| [persona-calibration.md](persona-calibration.md) | Persona judgment improves from evidence about useful signal, false positives, missed issues, and assignment fit. |
+| [playbook-library.md](playbook-library.md) | Repeated successful tactics become reusable playbooks with applicability, verification, and failure modes. |
+| [team-health.md](team-health.md) | Team conditions for learning are assessed: safety, dependability, clarity, meaning, impact, load, and learning culture. |
 | [code-review.md](code-review.md) | No change lands without a different viewpoint, from a different mind and usually a different model. |
 | [plan-review.md](plan-review.md) | No non-trivial plan executes until it's been reviewed by a different persona on a different model — multiple personas when the plan spans concerns. |
 | [design-first.md](design-first.md) | Every change considers system design; important changes earn a design review. Built for flexibility, maintainability, and bounded cost at scale. |
