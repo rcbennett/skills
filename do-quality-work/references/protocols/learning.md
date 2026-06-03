@@ -15,6 +15,8 @@ At the end of any non-trivial work session, before the final response, the owner
 
 If the answer to #1 is "nothing," that's a valid answer, but the owner must say so in the session summary.
 
+Learning capture is an execution responsibility. When the right home is a project document, decision record, convention, protocol, playbook, persona artifact, or skill instruction, update that artifact during the session when permissions and scope allow. Do not leave a bare recommendation for the user to request later if the evidence is clear and the artifact is writable. Persistent Codex memory is the exception: follow the active memory policy exactly, and if explicit user instruction is required but absent, report the proposed memory update instead of writing it.
+
 ## Structured learning entry
 
 Use this structure for durable persona or project learnings:
@@ -53,6 +55,7 @@ Match the learning to the right home. More than one may apply.
 | A repeated tactic became a reusable procedure | `management/playbooks/<slug>.md` or `management/personas/<member-slug>/playbooks/<slug>.md` |
 | A new repeatable process | A new or updated protocol under `management/protocols/` |
 | A tactic or style norm that isn't a process | `management/conventions/` (create when needed) |
+| A cross-project operating rule or skill trigger needs correction | The relevant Codex skill or bundled protocol reference |
 
 ## Learning lifecycle
 
@@ -76,8 +79,10 @@ Match the learning to the right home. More than one may apply.
 - Before final response, require one session-level learning assessment for the completed prompt, not a separate learning ritual after every subtask.
 - Before accepting returned work from a subagent, ask: "what did you learn, and where does it live now?"
 - Reject "done" claims that don't address the three questions when the work session warranted it.
-- Update persona memories directly when a learning changes the persona's durable behavior, skills, risks, review lens, coordination style, or management practice.
+- Update persona memories directly when a learning changes the persona's durable behavior, skills, risks, review lens, coordination style, or management practice and the active environment permits it.
 - Create or update calibration and playbooks when the learning belongs there instead of in the persona narrative.
+- Update protocols, conventions, or skill guidance when the session reveals a repeatable process gap that should change future agent behavior.
+- Treat persistent Codex memory writes as policy-gated. If the active memory policy requires explicit user instruction, do not write memory until that instruction exists; instead say exactly what should be remembered.
 - Periodically prune: stale memory records, outdated persona entries, and `decisions.md` entries that history has overturned. A doc that lies is worse than no doc.
 
 ## Subagent briefs
