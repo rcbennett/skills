@@ -46,6 +46,16 @@ Verification is required for confidence, but repeated verification has real time
 - If a test fails, fix the cause and rerun the smallest relevant check first; broaden only when the fix touches shared behavior or the narrow check passes and a release/commit/deploy decision needs wider confidence.
 - If verification is intentionally deferred because it would be wasteful at the current point in the work, say what was deferred, why, and when it should run.
 
+## Release Convergence Rule
+
+Quality work must converge. When the user has a near-term release horizon or asks to avoid a never-ending loop, define the release question, minimum sufficient evidence contract, and stop condition before the next expensive iteration.
+
+- Classify each new finding as a product/safety/security defect, a broken required evidence path, or a deferrable refinement.
+- Fix product risks and broken required gates. Record refinements with an owner and rationale; do not silently promote them into the current release scope.
+- Do not broaden an acceptance lane because unrelated assertions are available in the same workflow. Separate blocking assertions from diagnostic-only observations.
+- Stop rerunning an expensive gate once it answers the release question, unless a later code change invalidates that evidence.
+- Never use convergence to waive an unresolved high-severity defect. The purpose is to spend quality effort where it changes risk or the release decision, not to lower the bar.
+
 ## Slice Size And Overhead Rule
 
 Choose work size deliberately. Quality work optimizes for net progress at acceptable risk, not for the smallest possible commit or the largest possible batch.
