@@ -1,4 +1,4 @@
 interface:
   display_name: "Do Quality Work"
-  short_description: "Assign owners, reviews, risks, and decision protocols"
-  default_prompt: "Use $do-quality-work to retrieve prior learnings, assign task owners, choose the right slice size for risk versus overhead, decide whether review, red-team, steelman, pre-mortem, council consensus, decision-record, learning, calibration, AAR, playbook, or team-health protocols are needed, verify the work, proactively capture durable learnings in the right writable artifact, and report protocol improvement opportunities."
+  short_description: "Run evidence-first quality workflows"
+  default_prompt: "Use $do-quality-work to establish decisive evidence, choose a proportionate protocol and review lane, execute the smallest safe slice, and report verified outcomes and gaps."

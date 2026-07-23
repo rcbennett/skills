@@ -1,16 +1,16 @@
 # Protocol: Model Selection
 
-**Principle:** Picking the right model is almost as important as picking the right team member. Different models have different strengths, different blind spots, and different costs. Atlas chooses deliberately — and a reviewer always runs on a different model than the author.
+**Principle:** Pick models deliberately for the work and the risk. Model diversity is a property of an important review boundary, not a reason to add reviewers or rerun bounded work.
 
-## The roster
+## Selection tiers
 
-We route work across the current Codex / GPT-5 family exposed by the harness. Treat the live tool roster as source of truth; this document describes **selection tiers**, not permanently blessed SKUs.
+Treat the live harness roster as the only source of truth. Do not preserve model names in this protocol; they drift faster than the selection principles.
 
-| Tier | Typical examples in this harness | Strengths | Good for |
-|---|---|---|---|
-| **Flagship reasoning** | `gpt-5.4`, `gpt-5.2` | Deep reasoning, long-context synthesis, judgment | Architecture, ambiguous specs, security review, high-stakes decisions |
-| **Implementation-focused Codex** | `gpt-5.2-codex`, `gpt-5.3-codex`, `gpt-5.1-codex-max` | Strong code editing and repo execution | Routine implementation, most code review, multi-file changes |
-| **Fast scout / mini** | `gpt-5.4-mini`, `gpt-5.1-codex-mini`, `gpt-5.3-codex-spark` | Speed, low cost, broad parallel scouting | First-pass triage, bounded transforms, repo search tasks |
+| Tier | Strengths | Good for |
+|---|---|---|
+| **Flagship reasoning** | Deep reasoning, long-context synthesis, judgment | Architecture, ambiguous specs, security review, high-stakes decisions |
+| **Implementation-focused** | Strong code editing and repository execution | Routine implementation, most code review, multi-file changes |
+| **Fast scout** | Speed, low cost, broad parallel scouting | First-pass triage, bounded transforms, repository search |
 
 Atlas typically operates on the current default frontier coding model, then reaches for implementation-focused or mini subagents to parallelize and get independent viewpoints.
 
@@ -32,29 +32,30 @@ Match model to task:
 
 When uncertain, start cheaper. Escalate to a larger model when the smaller one stalls, hedges, or returns generic work. Do not escalate just because a first pass had flaws — fix the brief first.
 
-## Reviewer ≠ Author (the model diversity rule)
+## Model diversity at decision boundaries
 
-Per [code-review.md](code-review.md), the reviewer's model must differ from the author's. Blind spots correlate within a model family, so a reviewer from a different tier or model often catches what the author normalized away.
+Blind spots can correlate within a model family, so a different model is valuable when review judgment can change an architecture choice or a final production decision.
 
-Pairings, by default:
+Use these defaults:
 
-- Flagship author → **implementation-focused reviewer** (sometimes fast-scout first for a quick sanity pass, then implementation-focused for depth).
-- Implementation-focused author → **flagship reviewer** for high-stakes work; **fast-scout reviewer** for low-risk mechanical work.
-- Fast-scout author → **implementation-focused reviewer**.
-- Anyone → **flagship reviewer** for any security, auth, or rule change.
+- Initial architecture or durable-boundary decision → prefer one reviewer on a different model or tier from the author.
+- Final production packet → prefer one different-model reviewer when the change is non-trivial.
+- Actual safety, security, or irreversible boundary change → use two independently executed reviewers on different models or tiers when available, with partitioned lanes.
+- Blocker-only delta → the original reviewer and model may verify the narrow fix.
+- Low-risk mechanical or editorial work → model diversity is optional.
 
-For critical changes, Atlas runs **two reviewers on different models** and reconciles findings.
+Do not count model diversity as an additional reviewer. One agent applying several personas or role lenses remains one independently executed review and, in a council, one vote.
 
 ## Dispatching with model overrides
 
-When dispatching a subagent via the `Agent` tool, set `model` explicitly for any non-default choice. Examples:
+When dispatching a subagent, set `model` explicitly for any non-default choice. Examples:
 
 - Research sweep across many files → multiple fast-scout / mini subagents in parallel.
-- Architecture proposal → flagship reasoning subagent adopting the relevant persona (Morgan, usually).
-- Routine Swift view implementation → implementation-focused Codex subagent adopting Ishaan.
-- Review of the above → a different flagship or implementation-focused model adopting a different persona.
+- Architecture proposal → flagship reasoning subagent adopting the relevant architecture or domain owner.
+- Routine single-platform view implementation → implementation-focused subagent.
+- Review of the above → a different flagship or implementation-focused model when the review sits at an architecture or final-production boundary.
 
-The persona and the model are independent choices. Ishaan on a mini scout and Ishaan on a flagship reasoner are different instruments; pick by the task, not the title.
+The persona and the model are independent choices. The same domain persona on a fast scout and on a flagship reasoner are different instruments; pick by the task, not the title.
 
 ## Cost & cache hygiene
 
@@ -65,7 +66,7 @@ The persona and the model are independent choices. Ishaan on a mini scout and Is
 
 ## When to revisit this protocol
 
-- The harness roster changes materially. Update the example table and the defaults; record the change in `decisions.md`.
+- The harness capabilities change materially. Update the tier guidance only when selection behavior should change; do not add a drifting SKU list.
 - We notice a systematic blind spot in a pairing. Rotate the defaults.
 - Persona calibration shows a reviewer or owner has changed strengths, blind spots, false-positive rate, or assignment fit.
 - Cost becomes a real constraint. Tighten the "default cheaper, escalate on stall" rule.
@@ -73,7 +74,8 @@ The persona and the model are independent choices. Ishaan on a mini scout and Is
 ## Atlas's role
 
 - Picks model and persona for every dispatch. Both decisions are logged implicitly by the dispatch itself.
-- Enforces the reviewer ≠ author model rule without exception on non-trivial changes.
+- Applies model diversity at architecture, final-production, safety, security, and irreversible decision boundaries.
+- Does not add reviewers merely to satisfy model variety; every reviewer has a distinct lane and decision question.
 - Tracks which pairings produce real bugs caught vs. noise, and adjusts defaults over time.
 - Uses `management/personas/<member-slug>/calibration.md` when available before choosing reviewers for high-impact work.
 - Teaches, doesn't gatekeep: when a choice surprises Rob, I explain why I picked it.

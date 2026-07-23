@@ -2,6 +2,21 @@
 
 **Principle:** Confidence in changes comes from running them, but verification has real time, usage, and attention costs. Atlas should test as much as possible without waiting on Rob, choose the slice size that makes the verification overhead worthwhile, and say plainly where a gap remains.
 
+## Minimum sufficient evidence contract
+
+Before detailed planning or an expensive verification loop, define:
+
+- **Decision question**
+- **Blocking claims**
+- **Cheapest authoritative evidence for each claim**
+- **Prerequisites and current blockers**
+- **Invalidation condition**
+- **Stop condition**
+
+Run the cheapest decisive probe first. When a prerequisite is missing, record the blocker and the closest valid fallback. Do not present source inspection, simulated output, or a mocked test as equivalent to a required runtime or measured effect.
+
+Do not create a new fixture, simulator extension, evidence schema, or harness until existing tests and the product path have been assessed. The new infrastructure must answer a named unanswered decision question more directly or repeatably than existing evidence.
+
 ## Slice size and verification cost
 
 Before committing to a work plan or rerunning an expensive verification loop, choose the right work unit:
@@ -12,79 +27,69 @@ Before committing to a work plan or rerunning an expensive verification loop, ch
 
 Run targeted checks while iterating inside a packet. Run broad test suites, generated evidence, docs rollups, credential scans, review cycles, and commits at packet/checkpoint boundaries unless a new risk justifies doing them sooner. Do not batch unrelated work just to reduce ceremony; every packet must stay reviewable, debuggable, reversible, and explainable.
 
-## Currently working
+Default implementation plans to two to four checkpoints. Each task should enable the first working path, protect a high-severity invariant, or delete superseded behavior.
 
-| Surface | Command | Where | Speed | Notes |
-|---|---|---|---|---|
-| Cloud Functions TypeScript build | `npm run build` | `CloudFunctions/` | ~1.5s | Catches type errors and import errors immediately |
-| Cloud Functions tests | `npm test` | `CloudFunctions/` | ~12ms (87 passing as of 2aadd17) | Mocha/chai; logic, role utils, content moderation, tracing, tvPairingV2 |
-| Web admin tests | `npm test` | `PlatformClients/web/admin/` | ~26ms (98 passing) | Mocha/chai; XSS escape, renderers, isAdmin, capability taxonomy |
-| Apple macOS app build | `xcodebuild build -scheme TerraFlo-macOS -destination 'platform=macOS'` | `PlatformClients/apple/` | minutes | Last verified 2026-04-24; Firebase package warning only |
-| Apple iOS app build | `xcodebuild build -scheme TerraFlo-iOS -destination 'generic/platform=iOS'` | `PlatformClients/apple/` | minutes | Last verified 2026-04-24; existing Swift concurrency / MapKit warnings |
-| Apple tvOS app build | `xcodebuild build -scheme TerraFlo-tvOS -destination 'generic/platform=tvOS'` | `PlatformClients/apple/` | minutes | Last verified 2026-04-24; existing Swift concurrency warnings |
-| Android app build | `./gradlew :app:assembleDebug` | `PlatformClients/android/` | tens of seconds | Last verified 2026-04-24; SDK XML/deprecated icon warnings only |
-| SharedCore (KMP) tests | `./gradlew test --quiet` | `SharedCore/` | ~16s | TCXExporter, Project, GPMF, TelemetryManager, TCRParser |
-| TerraFloShared XCTest | `xcodebuild -scheme TerraFloSharedTests -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.2' test` | `PlatformClients/apple/` | ~33s clean; faster incremental | Last verified 2026-04-21: 250 tests, 0 failures. Shared XCTest path for `TerraFloShared`; builds TerraFloShared + Firebase + nanopb cleanly on clean state. |
+For a refactor, map:
 
-After any change to:
-- `CloudFunctions/src/**/*.ts` → run `npm run build && npm test` in `CloudFunctions/`.
-- `PlatformClients/web/admin/**/*.js` → run `npm test` in `PlatformClients/web/admin/`.
-- `PlatformClients/apple/**/*.swift` → run the affected `xcodebuild build` scheme(s) from `PlatformClients/apple/`; run `xcodegen` first after adding/removing Swift files.
-- `PlatformClients/android/app/**/*.kt` → run `./gradlew :app:assembleDebug` in `PlatformClients/android/`.
-- `SharedCore/src/**/*.kt` → run `./gradlew test --quiet` in `SharedCore/`.
+```text
+Changed seam -> current callers -> side effect -> preserved invariant -> authoritative evidence
+```
 
-If a Storage rules change uses `firestore.get()` or `firestore.exists()`:
-- Confirm the Firebase Storage service agent (`service-<project-number>@gcp-sa-firebasestorage.iam.gserviceaccount.com`) has `roles/firebaserules.firestoreServiceAgent`.
-- If not, grant it before judging the deploy. Without that IAM binding, published asset reads will fail at runtime even if the rules compile and deploy cleanly.
+When a lifecycle, event, concurrency, adapter, or ownership seam changes, trace the side effect through that handoff. The continued presence of old safety code is not proof that the new handoff invokes it.
 
-If a callable or background function uses `admin.auth().createCustomToken(...)`:
-- Confirm the deployed runtime service account has `roles/iam.serviceAccountTokenCreator` on itself.
-- If not, grant it before judging pairing/auth flows. Without that IAM binding, the function will reach production and then fail at runtime with `iam.serviceAccounts.signBlob denied`.
+## Discover the live verification path
 
-## Currently blocked (needs Rob)
+Use project instructions, package manifests, CI configuration, and project-local verification protocols to discover exact commands. Do not copy dated test counts, device names, SDK assumptions, credentials, or model/tool rosters into this generic protocol.
 
-| Surface | Blocker |
-|---|---|
-| `xcodebuild -target TerraFloShared -destination 'iOS Simulator'` (no device name) | Reproducibly fails with the nanopb `build`-file conflict — turned out to be a diagnostic-only path, not a real workflow. **Use the scheme-based test command above instead** (`-scheme TerraFloSharedTests -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.2'`) which does not hit this. |
-| iOS / macOS app-level unit / UI tests | TerraFloShared XCTest exists, but app-layer XCTest and UI automation are still thin. Expanding that coverage is its own workstream. |
-| On-device behavior — BLE, hardware, AirPlay, Photos picker | Requires real hardware Rob has and I don't. |
+Before relying on a command:
+
+- confirm that the target, scheme, task, or script exists;
+- confirm that required credentials and configuration are present without exposing secrets;
+- confirm that the simulator, emulator, device, route, data, or external service needed for the decision can start; and
+- distinguish an executable acceptance lane from a known manual or external gate.
 
 ## Surface-by-surface escalation when blocked
 
 When the primary build is unavailable:
 
-- **Swift edit, build blocked:** I can't fully verify, but I can:
-  - Use SourceKit diagnostics surfaced by the harness (note: imports of project frameworks like `TerraFloShared` / `FirebaseCore` will always be flagged as missing modules — that is an LSP limitation, not a real compile error).
+- **Compiled-language edit, build blocked:** I can't fully verify, but I can:
+  - Use language-server or compiler-front-end diagnostics while naming their limitations.
   - Read the file end-to-end after editing; re-check syntax visually for the change.
-  - Cross-check the public API surface used (`grep` for the symbol's definition).
-  - Mark the commit body explicitly: "**Build verification blocked on DerivedData; fix is review-only until Rob clears.**" so Rob knows the diff didn't get a green light.
-
-- **Cloud Functions / web edit, runtime blocked (e.g., emulator not configured):** unit tests run, integration is the gap; flag it.
-
-- **KMP edit:** `./gradlew test` runs commonTest only. Platform integration on iOS/Android remains unverified until those build.
+  - Cross-check the public API surface used (`rg` for the symbol's definition).
+  - Mark the result as reviewed but not build-verified.
+- **Runtime or integration blocked:** run applicable unit/static checks, but identify the exact runtime gap.
+- **Shared-core edit:** run shared tests, but keep platform integration unverified until affected platform builds or runtime checks pass.
 
 ## Required practice
 
-After every commit that touches a verifiable surface:
-- Run the relevant test/build command **before** announcing the commit to Rob.
-- If the command fails, **roll back the commit and investigate** before proceeding. Do not pile a fix-the-fix commit on top of a broken main.
-- If the command succeeds, mention it in the message ("CloudFunctions tests still 70/70 green").
+Before committing a change that touches a verifiable surface:
+- Run the relevant test/build command before announcing completion.
+- If the command fails, investigate before committing or claiming the change is verified. Do not pile a fix-the-fix commit on top of a known broken baseline.
+- If the command succeeds, report the exact command and outcome without carrying forward stale historical counts.
 - For non-trivial work, state the slice-size choice when reporting: micro-slice, capability packet, or broader checkpoint, with the risk/overhead reason.
 
-For Swift edits while builds are blocked:
-- Acknowledge the gap in the commit body.
-- Don't claim "verified" — claim "reviewed," and tell Rob a build is needed before merging conceptually.
+For safety or actuator behavior, verify applicable changed-boundary invariants:
+
+- command and device identity;
+- neutralization on pause, finish, background, disconnect, or ownership loss;
+- fail-closed behavior; and
+- no post-fence writes.
+
+Use deterministic simulator or local-transport checks during development. When physical hardware is required for final confidence, run one physical pass against the exact final candidate revision. Move physical testing earlier only when hardware feasibility is itself unresolved.
+
+For edits while required builds are blocked, acknowledge the gap and do not claim the change is verified.
 
 ## Atlas's role
 
 - Pick the cheapest verification tool that exercises the change, and use it.
-- When the change is too small for tests but the verification framework exists, still run `npm run build` (catches surprises in seconds).
+- When the change is too small for a behavioral test but a cheap compile, type-check, or lint path exists, still run it.
+- Stop rerunning an expensive gate once it answers the decision question. Rerun only when a relevant change invalidates the evidence.
 - When verification is genuinely blocked, surface that explicitly to Rob in the commit / message, not silently.
 - Periodically re-attempt currently-blocked surfaces (a fresh clone, an SDK install) and update this doc when a new path opens.
 
 ## How to add a new verification path
 
-When a new test or build surface comes online (e.g., Rob clears DerivedData and Xcode builds work again):
-1. Document the exact command, working directory, and expected runtime.
-2. Add to the "Currently working" table in this doc.
-3. From that commit forward, that path is required practice for changes touching that surface.
+When a new test or build surface comes online:
+1. Document the exact command, working directory, prerequisites, and expected runtime in the project-local verification protocol.
+2. Run it once against a known baseline and record what a passing result establishes.
+3. From that project change forward, use it for work touching the verified surface until newer evidence invalidates it.

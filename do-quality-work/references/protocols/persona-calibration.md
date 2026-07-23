@@ -6,14 +6,14 @@
 
 Update calibration when a persona:
 
-- Reviews a plan, design, code change, safety issue, domain claim, or verification result.
-- Produces a false positive, especially a negative claim about something missing or broken.
-- Misses a material issue another reviewer catches.
+- Makes a useful material catch that should increase trust in a specific review lane.
+- Produces a false positive, especially an unsupported claim that something is missing or broken.
+- Misses a material issue another reviewer or runtime evidence catches.
 - Causes avoidable rework through unclear ownership, weak handoff, or stale assumptions.
 - Repeatedly catches useful issues in a specific domain.
-- Gets assigned work outside its proven strengths.
+- Produces a noisy review or a meaningful strong/weak assignment-fit signal.
 
-Use calibration during Talent Planning, task assignment, reviewer selection, AARs, and model-selection updates.
+Do not create a calibration entry merely because a persona participated in a review or task. Use calibration during Talent Planning, reviewer selection, AARs, and model-selection updates only when the session produced one of the signals above.
 
 ## Storage
 

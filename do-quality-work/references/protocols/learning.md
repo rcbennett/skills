@@ -2,9 +2,9 @@
 
 **Principle:** Every work session is a learning event. What we discover must outlive the session, or we'll rediscover it next month.
 
-## What every team member does
+## One root assessment per session
 
-At the end of any non-trivial work session, before the final response, the owner answers three questions. A work session means completing the instruction in the user's prompt, not each individual task executed inside that session.
+At the end of a non-trivial prompt-level work session, the root owner answers three questions once for the session:
 
 1. **What did I learn that wasn't obvious from the code?**
    Surprising behavior, hidden constraints, a library quirk, a decision someone made three commits ago that matters now.
@@ -13,9 +13,9 @@ At the end of any non-trivial work session, before the final response, the owner
 3. **Did I invalidate anything we already believed?**
    A stale assumption in `decisions.md`, a persona's "owns" list that's wrong, a memory that should be updated or deleted.
 
-If the answer to #1 is "nothing," that's a valid answer, but the owner must say so in the session summary.
+If the answer to #1 is "nothing," no learning artifact or final-response section is required unless the user asked for one.
 
-Learning capture is an execution responsibility. When the right home is a project document, decision record, convention, protocol, playbook, persona artifact, or skill instruction, update that artifact during the session when permissions and scope allow. Do not leave a bare recommendation for the user to request later if the evidence is clear and the artifact is writable. Persistent Codex memory is the exception: follow the active memory policy exactly, and if explicit user instruction is required but absent, report the proposed memory update instead of writing it.
+Learning capture is an execution responsibility when it falls within the user's requested scope. When the right home is outside scope or requires authority not granted by the user, propose the exact update instead of expanding the task. Persistent Codex memory always follows the active memory policy.
 
 ## Structured learning entry
 
@@ -77,8 +77,8 @@ Match the learning to the right home. More than one may apply.
 ## Atlas's role
 
 - Before final response, require one session-level learning assessment for the completed prompt, not a separate learning ritual after every subtask.
-- Before accepting returned work from a subagent, ask: "what did you learn, and where does it live now?"
-- Reject "done" claims that don't address the three questions when the work session warranted it.
+- Ask a subagent for a learning note only when its work exposed a surprising fact likely to be reusable.
+- Do not reject otherwise complete subagent work for omitting a generic "nothing learned" section.
 - Update persona memories directly when a learning changes the persona's durable behavior, skills, risks, review lens, coordination style, or management practice and the active environment permits it.
 - Create or update calibration and playbooks when the learning belongs there instead of in the persona narrative.
 - Update protocols, conventions, or skill guidance when the session reveals a repeatable process gap that should change future agent behavior.
@@ -87,9 +87,11 @@ Match the learning to the right home. More than one may apply.
 
 ## Subagent briefs
 
-Every subagent brief for non-trivial work includes:
+Include a learning request only when the assigned work is exploratory, diagnostic, or likely to expose a durable non-obvious constraint:
 
-> When you finish the prompt-level work session, include a short **Learnings** section: what was surprising, where it should live (code / docs / memory / persona memories), and anything we previously believed that this invalidates. If nothing was surprising, say so.
+> When you finish the prompt-level work session, include a short **Learnings** section covering only surprising, durable findings: what changed, where it should live, and anything we previously believed that this invalidates.
+
+Omit this request for routine bounded implementation, mechanical review, and deterministic verification.
 
 ## Signals that learning isn't happening
 
