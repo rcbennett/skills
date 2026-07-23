@@ -1,5 +1,23 @@
 # Decisions
 
+## 2026-07-23: Add preservation-first workspace and document lifecycle
+
+**Status:** accepted
+
+**Decision:** Make clean-as-you-go reconciliation part of `do-quality-work`. Track the task-owned or explicitly adopted workspace delta, preserve unique work before cleanup, maintain durable source-of-truth documents as reality changes, and close/archive completed work artifacts under the repository's existing convention. Define clean as no unexplained task-owned residue or stranded unique content, not a globally empty repository.
+
+**Context:** Complex work routinely creates branches, worktrees, stashes, temporary/generated artifacts, implementation plans, reports, and review documents. The prior skill required a clean handoff but did not define artifact ownership, safe source-control retirement, document authority, blocked-work preservation, or when an active artifact should become historical. This allowed hidden local work and stale active-looking documents to accumulate.
+
+**Options considered:** Keep cleanup as an implied final step; require every task to leave a globally empty repository and archive all completed documents; use proportional checkpoint reconciliation with preservation-first deletion guards and explicit document roles.
+
+**Rationale:** A task-owned delta avoids full-repository ceremony on small work while still preventing task-created residue. Preservation checks protect local-only and squash-merged branch content, and semantic document roles keep plans/reports from competing with current designs, READMEs, requirements, runbooks, decisions, and project-state documents.
+
+**Consequences:** `SKILL.md`, `implementation-planning.md`, the implementation-plan template, and the protocol index now route relevant work through `workspace-and-document-lifecycle.md`. Material plans track workspace/document disposition and closeout evidence. Pre-existing or unrelated state is protected by default, blocked work receives a resumable preservation packet, and destructive cleanup requires exact targets plus preservation or regenerability evidence.
+
+**Verification:** The skill package, Markdown links, UI metadata, semantic cleanup assertions, and working diff passed validation. Forward tests correctly required preservation/content proof for a completed squash-merged refactor, retained a blocked branch/worktree/stash/evidence packet without premature archival, and kept a narrow direct fix from inventorying or touching unrelated pre-existing state.
+
+**Revisit trigger:** Revisit if agents still strand work in local branches/stashes, archive canonical documents, leave completed plans looking active, or turn routine changes into exhaustive repository inventories and artifact ledgers.
+
 ## 2026-07-23: Add architecture-gated durable implementation planning
 
 **Status:** accepted

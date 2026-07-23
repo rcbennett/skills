@@ -9,6 +9,7 @@
 - [Required plan structure](#required-plan-structure)
 - [Checkpoint quality](#checkpoint-quality)
 - [Plan lifecycle](#plan-lifecycle)
+- [Workspace and document lifecycle](#workspace-and-document-lifecycle)
 - [Status model](#status-model)
 - [Review and execution handoff](#review-and-execution-handoff)
 - [Failure signals](#failure-signals)
@@ -80,6 +81,8 @@ Keep these elements:
    - final authoritative validation;
    - deletion/static ownership audit where applicable;
    - documentation/decision reconciliation;
+   - scoped source-control and temporary-artifact reconciliation;
+   - active, durable, generated, and historical document disposition; and
    - clean handoff and rollback state.
 
 ## Checkpoint quality
@@ -104,13 +107,30 @@ When materially different platform constraints can alter the shared architecture
 - Keep one accountable plan owner.
 - Multiple implementers may work within the one active checkpoint when their task boundaries and integration owner are explicit; do not activate several checkpoints in parallel.
 - Update the progress summary and active checkpoint at checkpoint boundaries, not after every small edit.
-- Close a checkpoint with a compact receipt: objective, changed files, acceptance commands/results, runtime or physical evidence, remaining gap, and next action.
+- Close a checkpoint with a compact receipt: objective, changed files, acceptance commands/results, runtime or physical evidence, workspace/document disposition, remaining gap, and next action.
 - Collapse completed detail to receipts when the plan becomes difficult to scan. The plan is not a transcript or evidence dump.
 - Preserve stable task and blocker IDs so later agents can perform narrow handoffs and delta reviews.
 - Treat editorial changes and receipt updates as non-design changes.
 - Re-review only the affected lane when a task, acceptance command, or local checkpoint detail changes.
 - Return to architecture design when ownership, public interfaces, data flow, persistence, safety/security boundaries, or the finish line changes materially.
 - Start a linked corrective plan when newly discovered work establishes a different finish line or architecture boundary. Do not indefinitely append new projects to a completed plan.
+
+## Workspace and document lifecycle
+
+Read [workspace-and-document-lifecycle.md](workspace-and-document-lifecycle.md) when the plan creates or adopts source-control state, temporary/generated artifacts, or multiple work documents.
+
+Record only the task-owned or task-adopted delta:
+
+- baseline branch/revision and relevant pre-existing state that must be protected;
+- task-created branches, worktrees, stashes, untracked/temp artifacts, and their retirement conditions;
+- active control documents and their status/next action;
+- durable source-of-truth documents the checkpoint must maintain;
+- generated evidence or deliverables and their provenance/retention; and
+- completed or superseded work artifacts to close and archive under the repository convention.
+
+Reconcile this delta at checkpoint boundaries. A retained item must have a continuing purpose, owner, and exact next action. Do not require a globally empty repository or move unrelated state into the plan.
+
+When a plan completes, record its final receipt and transition it from active control to a completed historical artifact. Archive it only after durable facts, decisions, and links are reconciled. A blocked plan stays active with a preservation packet; it is not terminally cleaned or archived.
 
 ## Status model
 
@@ -159,3 +179,7 @@ Reviewers verify that the plan implements the approved architecture rather than 
 - Checkboxes close without executed acceptance evidence.
 - A plan grows through repeated incident addenda after its original finish line is complete.
 - The summary, checkpoint status, branch, or reviewed plan revision disagrees with the current artifact.
+- Unique task work remains only in an unexplained local branch, worktree, stash, or untracked file.
+- Cleanup removes or rewrites pre-existing state that the task did not own.
+- A completed plan remains active-looking, or generated evidence competes with canonical project truth.
+- Durable designs, READMEs, requirements, runbooks, decisions, or project-state documents drift behind the implemented result.

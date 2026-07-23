@@ -1,6 +1,6 @@
 ---
 name: do-quality-work
-description: Apply an evidence-first quality workflow for non-trivial implementation, architecture design, durable implementation-plan documents, review, decisions, cross-platform work, and validation. Use when Codex must determine whether up-front design or a tracked plan is required, strengthen overall system architecture, choose proportionate protocols and reviewers, verify claims, protect safety or platform boundaries, size an executable slice, assess a plan or code change, record a material decision, or capture a durable learning without letting process overhead replace progress.
+description: Apply an evidence-first quality workflow for non-trivial implementation, architecture design, durable implementation-plan documents, review, decisions, cross-platform work, validation, and clean repository/document handoff. Use when Codex must determine whether up-front design or a tracked plan is required, strengthen overall system architecture, choose proportionate protocols and reviewers, verify claims, protect safety or platform boundaries, size an executable slice, manage task-created branches, worktrees, stashes, temporary artifacts, or document lifecycles, assess a plan or code change, record a material decision, or capture a durable learning without letting process overhead replace progress.
 ---
 
 # Do Quality Work
@@ -95,6 +95,7 @@ Choose one **primary protocol** for the current decision or phase and, when a di
 | Formal plan approval | `plan-review.md` | one specialist reviewer when needed |
 | Production implementation or refactor | `code-review.md` | safety/security/domain review |
 | Cross-platform migration or parity assessment after architecture approval | `cross-platform-parity.md` | domain or safety review |
+| Checkpoint, handoff, or cleanup of workspace/document artifacts | `workspace-and-document-lifecycle.md` | none |
 | Negative claim such as missing, broken, or impossible | `verifying-claims.md` | none |
 | Test, build, runtime, release, or hardware confidence | `verification-toolchain.md` | `pre-mortem.md` for fragile cutovers |
 | Material disputed or hard-to-reverse decision | `council-review.md` | only the specialist evidence needed |
@@ -159,7 +160,23 @@ Use deterministic simulator or local-transport checks during development. When p
 
 Report only what the evidence establishes. Keep source values, commands, simulated state, requested output, and measured/applied effects distinct.
 
-## 8. Learn Proportionately
+## 8. Clean As You Go
+
+Read [workspace-and-document-lifecycle.md](references/protocols/workspace-and-document-lifecycle.md) when work creates or adopts a branch, worktree, stash, temporary directory, generated artifact, or multiple work documents, or when cleanup, archival, merge, rebase, release, migration, deletion, or handoff is in scope.
+
+Before creating non-trivial workspace state, distinguish pre-existing or unrelated state from state created or explicitly adopted by this task. At each material checkpoint:
+
+- remove exact task-created scratch that no longer answers an open question;
+- reconcile task-created branches, worktrees, stashes, untracked files, and generated artifacts;
+- update durable source-of-truth documents such as current designs, READMEs, requirements, runbooks, decisions, and project-state files when reality changes;
+- keep active plans and trackers current; and
+- close and archive completed work artifacts under the repository's existing convention after their durable facts and links are reconciled.
+
+Clean means no unexplained task-owned residue or unique task content stranded locally. It does not mean an empty global branch list, deletion of pre-existing/user state, merging beyond the request, or dismantling a blocked handoff. Full branch/worktree/stash inventories are required for material handoffs or credible hidden-state risk, not every small edit.
+
+Before deleting or archiving anything, verify the exact target, ownership, preservation or regenerability, current references, and recovery path. Preserve and report ambiguous state instead of guessing.
+
+## 9. Learn Proportionately
 
 For a non-trivial session, run one session-level learning assessment at the root:
 
@@ -173,7 +190,7 @@ Direct implementation does not trigger a learning assessment solely because it c
 
 Write durable learning only when it is within the user's scope and the active memory policy allows it. Otherwise propose the exact update without making it.
 
-## 9. Complete and Report
+## 10. Complete and Report
 
 Follow the user's instruction and the repository's established workflow for commits. Implementation work should be committed when requested or when the repository workflow requires a completed-task commit. Read-only reviews and plans do not need commit narration. Never mix unrelated user changes into a task commit.
 
@@ -182,13 +199,13 @@ Default the final response to four items:
 - **Outcome**
 - **Verification and gaps**
 - **Required next action**
-- **Change/commit status**
+- **Change/commit and cleanup status**
 
 Add ownership, council results, protocol details, or learning/calibration notes only when they materially affected the outcome or the user requested them.
 
 For a read-only answer with no requested or performed write, omit change/commit status unless it clarifies a likely ambiguity.
 
-Do not claim completion while a required blocker remains unresolved. Do not let consensus, passing unit tests, or preserved code substitute for missing authoritative runtime evidence.
+Do not claim completion while a required blocker remains unresolved, unique task work is hidden in unexplained local state, active work documents are stale, or required durable project truth is unreconciled. Do not let consensus, passing unit tests, or preserved code substitute for missing authoritative runtime evidence.
 
 ## Bundled References
 
@@ -206,6 +223,7 @@ Use only the files selected by the workflow:
 - [plan-review.md](references/protocols/plan-review.md)
 - [design-first.md](references/protocols/design-first.md)
 - [cross-platform-parity.md](references/protocols/cross-platform-parity.md)
+- [workspace-and-document-lifecycle.md](references/protocols/workspace-and-document-lifecycle.md)
 - [model-selection.md](references/protocols/model-selection.md)
 - [red-team.md](references/protocols/red-team.md)
 - [steelman.md](references/protocols/steelman.md)

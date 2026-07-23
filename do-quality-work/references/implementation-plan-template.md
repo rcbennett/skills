@@ -9,6 +9,7 @@
 - [Architecture Contract](#architecture-contract)
 - [Progress Rules](#progress-rules)
 - [Progress Summary](#progress-summary)
+- [Workspace And Document Lifecycle](#workspace-and-document-lifecycle)
 - [Implementation Checkpoints](#implementation-checkpoints)
 - [Deferred Work](#deferred-work)
 - [Definition Of Done](#definition-of-done)
@@ -20,6 +21,7 @@
 **Scope:**
 **Finish line:**
 **Design/decision:** link or `not required`
+**Workspace baseline:** branch/revision plus relevant pre-existing state to protect
 
 ## Plan Review Receipt
 
@@ -82,17 +84,26 @@ Link the approved design revision and list only the boundaries and invariants th
 | 2. <Second working slice or remaining migration> | pending | not started | | |
 | 3. <Convergence, deletion, or final validation> | pending | not started | | |
 
+## Workspace And Document Lifecycle
+
+Track only task-created/adopted state and canonical documents affected by this plan. Summarize unrelated pre-existing state only when it constrains the work.
+
+| Item | Role | Baseline / task-created | Current disposition | Retirement or update condition | Owner / next action |
+|---|---|---|---|---|---|
+| | branch / worktree / stash / temp / active control / durable truth / generated evidence / historical | | | | |
+
 ## Implementation Checkpoints
 
 ## Checkpoint 0 — Plan And Scope Lock
 
 **Objective:** establish evidence, architecture, scope, and an executable plan before production edits.
 
-- [ ] C0.1 Record the code baseline and confirm unrelated work is excluded.
+- [ ] C0.1 Record the code/workspace baseline and confirm unrelated or pre-existing state is excluded or protected.
 - [ ] C0.2 Complete the evidence preflight.
 - [ ] C0.3 Approve or link the architecture design when required.
 - [ ] C0.4 Inventory the changed seams and current callers.
-- [ ] C0.5 Review the plan and resolve blocking findings.
+- [ ] C0.5 Classify task-owned workspace and document artifacts with retirement/update conditions.
+- [ ] C0.6 Review the plan and resolve blocking findings.
 
 **Exit gate:** the first implementation checkpoint is runnable and no required design or plan blocker remains.
 
@@ -112,7 +123,7 @@ Link the approved design revision and list only the boundaries and invariants th
 
 **Exit gate:**
 
-**Receipt:** base/final revision, changed files, commands/results, runtime evidence, remaining gap, next action.
+**Receipt:** base/final revision, changed files, commands/results, runtime evidence, workspace/document disposition, remaining gap, next action.
 
 ## Checkpoint 2 — <Second Working Slice Or Remaining Migration>
 
@@ -130,7 +141,7 @@ Link the approved design revision and list only the boundaries and invariants th
 
 **Exit gate:**
 
-**Receipt:** base/final revision, changed files, commands/results, runtime evidence, remaining gap, next action.
+**Receipt:** base/final revision, changed files, commands/results, runtime evidence, workspace/document disposition, remaining gap, next action.
 
 ## Checkpoint 3 — <Convergence, Deletion, Or Final Validation>
 
@@ -139,6 +150,8 @@ Link the approved design revision and list only the boundaries and invariants th
 ### Deletion and static audit
 
 - [ ] C3.1
+- [ ] C3.2 Reconcile every task-created branch, worktree, stash, untracked/temp artifact, and retained handoff.
+- [ ] C3.3 Update durable project truth and close/archive completed work documents under the repository convention.
 
 ### Final acceptance
 
@@ -150,7 +163,7 @@ Link the approved design revision and list only the boundaries and invariants th
 
 **Physical/manual gate:** `not required`, `awaiting validation`, or exact candidate procedure.
 
-**Receipt:** final revision, changed files, commands/results, runtime/physical evidence, remaining gap, next action.
+**Receipt:** final revision, changed files, commands/results, runtime/physical evidence, workspace/document disposition, remaining gap, next action.
 
 ## Deferred Work
 
@@ -162,4 +175,8 @@ Link the approved design revision and list only the boundaries and invariants th
 - [ ] Superseded paths are deleted or intentionally documented.
 - [ ] Required automated, runtime, and physical evidence is current for the final candidate.
 - [ ] Decisions and project truth documents are reconciled.
+- [ ] No unique task content exists only in unexplained local state.
+- [ ] Retained task state has a purpose, owner, recovery path, and exact next action.
+- [ ] Pre-existing/user state remains untouched unless explicitly adopted into scope.
+- [ ] Active work documents are closed or current; durable truth is current; completed artifacts are archived or retained intentionally.
 - [ ] Checkpoint changes are reviewable/revertible and repository state is reconciled for handoff.

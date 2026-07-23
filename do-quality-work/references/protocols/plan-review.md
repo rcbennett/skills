@@ -53,14 +53,15 @@ Plan reviewers are briefed to check these — not code quality (nothing is writt
 1. **Evidence sufficiency.** Did the preflight answer the blocking claims with the cheapest authoritative probes?
 2. **Architecture readiness.** Was design performed when triggered, and does the plan preserve the approved responsibilities, contracts, invariants, migration, and non-goals?
 3. **Plan control integrity.** Is the artifact current, does it have one active checkpoint, and are implementation and validation status distinct?
-4. **First working path.** Can the first checkpoint produce an end-to-end result instead of infrastructure without behavior?
-5. **Changed-boundary map.** For refactors, does the plan show `changed seam -> current callers -> side effect -> preserved invariant -> authoritative evidence`?
-6. **Dependency ordering.** Does each checkpoint enable the next, and can obsolete paths be removed promptly?
-7. **Scope / YAGNI.** Are abstractions, fixtures, schemas, and harness changes admitted by a named unanswered decision question?
-8. **Missing pieces.** Cancellation, teardown, error paths, ownership transfer, observability, rollback, and deletion of replaced code.
-9. **Safety.** Does the plan verify the side effect across every changed lifecycle, event, concurrency, or adapter handoff?
-10. **Testability.** Do checks exercise behavior at the changed boundary instead of mocking around it?
-11. **Alignment.** Does the plan match current decisions and explicit user constraints?
+4. **Workspace and document lifecycle.** Does the plan distinguish task-owned from pre-existing state, keep durable truth current, and give branches, worktrees, stashes, temporary/generated artifacts, and completed work documents safe dispositions?
+5. **First working path.** Can the first checkpoint produce an end-to-end result instead of infrastructure without behavior?
+6. **Changed-boundary map.** For refactors, does the plan show `changed seam -> current callers -> side effect -> preserved invariant -> authoritative evidence`?
+7. **Dependency ordering.** Does each checkpoint enable the next, and can obsolete paths be removed promptly?
+8. **Scope / YAGNI.** Are abstractions, fixtures, schemas, and harness changes admitted by a named unanswered decision question?
+9. **Missing pieces.** Cancellation, teardown, error paths, ownership transfer, observability, rollback, and deletion of replaced code.
+10. **Safety.** Does the plan verify the side effect across every changed lifecycle, event, concurrency, or adapter handoff?
+11. **Testability.** Do checks exercise behavior at the changed boundary instead of mocking around it?
+12. **Alignment.** Does the plan match current decisions and explicit user constraints?
 
 Plan reviewers explicitly look for **gold-plating** — complexity the plan adds beyond MVP intent — and call it out.
 
@@ -106,6 +107,7 @@ After two review passes without new runtime or authoritative evidence, stop revi
 
 - **[code-review.md](code-review.md)** reviews code after it's written. This protocol reviews the plan before. Both happen.
 - **[implementation-planning.md](implementation-planning.md)** defines when the durable plan is required and how it is maintained.
+- **[workspace-and-document-lifecycle.md](workspace-and-document-lifecycle.md)** governs task-owned repository state, document authority, archival, and safe closeout.
 - **[design-first.md](design-first.md)** approves the architecture above the plan. A plan that disagrees with its design needs a design delta or rewrite, not a quiet fix.
 - **[verifying-claims.md](verifying-claims.md)** applies inside review: a reviewer who asserts "this won't compile" should cite the line. A reviewer who says "there's a Sendable issue" should name the type.
 
@@ -114,5 +116,6 @@ After two review passes without new runtime or authoritative evidence, stop revi
 - Default to two to four checkpoints.
 - Require each task to enable the first working path, protect a high-severity invariant, or delete superseded behavior.
 - Use stable task IDs and separate implementation from validation status.
+- Require a scoped closeout that preserves unique work, reconciles durable truth, and retires completed task artifacts.
 - Prefer focused checks during implementation and one broader verification pass at the packet boundary.
 - For hardware-dependent behavior, use deterministic simulator or local-transport checks during development and one physical pass against the exact final candidate revision unless physical feasibility is the unresolved question.
