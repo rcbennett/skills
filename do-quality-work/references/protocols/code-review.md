@@ -6,15 +6,20 @@
 
 | Change type | Review required? |
 |---|---|
-| Production code in any client, SharedCore, or Cloud Functions | Yes |
+| Material production logic, boundary, contract, lifecycle, persistence, migration, or behavior change | Yes |
+| Narrow local reversible logic change inside an established boundary with focused acceptance | Lightweight owner spot-check; independent review only for a named material risk or repository requirement |
 | Security rules, auth config, or anything touching PII | Yes — Riley is always a reviewer |
 | Public API surface of `SharedCore` or `VideoGPSCore` | Yes — Morgan is always a reviewer |
 | Grade pipeline or derived-metric changes | Yes — Dr. Voss is always a reviewer |
 | Docs-only edits, typo fixes, CI-only tweaks, dependency lock refreshes | No (Atlas spot-checks) |
 
-"Non-trivial" means: any logic change, any new file, any refactor, any deploy. When in doubt, review.
+"Non-trivial" means the change can alter a durable boundary, public behavior, high-severity invariant, multi-platform contract, operational state, or difficult-to-reverse outcome. File count, a new file, or the mere presence of logic does not decide review depth.
+
+A lightweight owner spot-check needs the changed artifact, focused acceptance result, and verdict. It does not require a formal review receipt, specialist, learning note, or broad suite unless another trigger requires one.
 
 ## Reviewer selection rules
+
+When formal independent review is required:
 
 1. **Default to one architecture/delivery reviewer.**
 2. **Add one specialist only for a distinct domain, safety, security, or platform risk.** For an actual safety, security, or irreversible boundary change, use two reviewers total by default: one delivery/domain lane and one specialist lane. A third requires a separately named material risk that neither lane owns.
@@ -28,7 +33,7 @@ Use a named persona only when domain decision rights or specialist judgment matt
 Reviewers are briefed to check these in order:
 
 1. **Correctness.** Does it do what it claims? Are edge cases handled?
-2. **Alignment.** Matches `decisions.md`, `guidelines.md`, and existing patterns?
+2. **Architecture and plan alignment.** Does the diff implement the approved design and active plan checkpoint without quietly changing responsibilities, public contracts, migration, or non-goals?
 3. **Changed boundaries.** Trace `changed seam -> current callers -> side effect -> preserved invariant -> authoritative evidence`. Shared logic stays in shared layers and platform code remains adaptation-only where that is the design.
 4. **Cross-platform parity.** See [cross-platform-parity.md](cross-platform-parity.md) — is the status correctly reflected in `requirements.md` + `PROJECT_STATE.md`?
 5. **Safety.** Rules, secrets, PII in logs, `Bundle.main` vs `Bundle.module`, destructive operations.
@@ -44,7 +49,7 @@ Reviewers also do the opposite job: catch unnecessary changes. Speculative abstr
 
 Reviewers return:
 
-- **Review receipt:** artifact path/hash, code baseline, reviewer identity/lane, independence/model status, evidence-preflight status, and stable blocker IDs.
+- **Review receipt:** artifact path/hash, code baseline, linked design/plan revision when applicable, reviewer identity/lane, independence/model status, evidence-preflight status, and stable blocker IDs.
 - **Verdict:** approve / request changes / block.
 - **Must-fix:** issues that block landing (correctness, safety, broken tests).
 - **Should-fix:** issues worth fixing before landing (clarity, parity, minor correctness).
@@ -65,6 +70,7 @@ Authors don't perform agreement. They:
 - Update persona memories or `decisions.md` if the review surfaced a durable lesson.
 - Update `calibration.md` when the review produced a real signal about reviewer quality, owner fit, false positives, missed issues, or noisy findings.
 - Skip re-review for editorial-only changes. Request lane-specific delta review when one lane changed. Rerun the full review only if scope, architecture, safety, or the evidence contract changed.
+- Return a material responsibility, interface, data-flow, safety/security-boundary, or finish-line change to design and plan delta review instead of accepting it as implementation drift.
 
 Authors who reflexively "fix" everything a reviewer flags without thinking are as broken as authors who ignore feedback. Atlas watches for both.
 

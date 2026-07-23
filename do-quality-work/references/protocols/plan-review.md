@@ -1,6 +1,16 @@
 # Protocol: Plan Review
 
-**Principle:** Review a plan only deeply enough to make the first safe working slice executable. Evidence, implementation, and deletion of obsolete paths matter more than speculative completeness.
+**Principle:** Review the current durable plan only deeply enough to make the first safe working slice executable while preserving the approved architecture. Evidence, implementation, and deletion of obsolete paths matter more than speculative completeness.
+
+## Contents
+
+- [When review is required](#when-review-is-required)
+- [Reviewer selection rules](#reviewer-selection-rules)
+- [What plan reviewers look for](#what-plan-reviewers-look-for-in-order)
+- [Review output shape](#review-output-shape)
+- [Receiving review](#receiving-review)
+- [Integration with other protocols](#integration-with-other-protocols)
+- [Minimum executable shape](#minimum-executable-shape)
 
 ## When review is required
 
@@ -26,6 +36,8 @@ Before review, complete the decisive-evidence preflight:
 
 Do not compensate for a blocked authoritative probe with a larger speculative plan.
 
+When `implementation-planning.md` requires a durable plan, review that repository artifact rather than a chat-only summary. Confirm that it records the code baseline, reviewed plan revision, finish line, current checkpoint, implementation/validation status, and linked approved design when `design-first.md` triggered.
+
 ## Reviewer selection rules
 
 1. **Default to one architecture/delivery reviewer.**
@@ -39,14 +51,16 @@ Do not compensate for a blocked authoritative probe with a larger speculative pl
 Plan reviewers are briefed to check these — not code quality (nothing is written yet), but **plan quality**:
 
 1. **Evidence sufficiency.** Did the preflight answer the blocking claims with the cheapest authoritative probes?
-2. **First working path.** Can the first checkpoint produce an end-to-end result instead of infrastructure without behavior?
-3. **Changed-boundary map.** For refactors, does the plan show `changed seam -> current callers -> side effect -> preserved invariant -> authoritative evidence`?
-4. **Dependency ordering.** Does each checkpoint enable the next, and can obsolete paths be removed promptly?
-5. **Scope / YAGNI.** Are abstractions, fixtures, schemas, and harness changes admitted by a named unanswered decision question?
-6. **Missing pieces.** Cancellation, teardown, error paths, ownership transfer, observability, rollback, and deletion of replaced code.
-7. **Safety.** Does the plan verify the side effect across every changed lifecycle, event, concurrency, or adapter handoff?
-8. **Testability.** Do checks exercise behavior at the changed boundary instead of mocking around it?
-9. **Alignment.** Does the plan match current decisions and explicit user constraints?
+2. **Architecture readiness.** Was design performed when triggered, and does the plan preserve the approved responsibilities, contracts, invariants, migration, and non-goals?
+3. **Plan control integrity.** Is the artifact current, does it have one active checkpoint, and are implementation and validation status distinct?
+4. **First working path.** Can the first checkpoint produce an end-to-end result instead of infrastructure without behavior?
+5. **Changed-boundary map.** For refactors, does the plan show `changed seam -> current callers -> side effect -> preserved invariant -> authoritative evidence`?
+6. **Dependency ordering.** Does each checkpoint enable the next, and can obsolete paths be removed promptly?
+7. **Scope / YAGNI.** Are abstractions, fixtures, schemas, and harness changes admitted by a named unanswered decision question?
+8. **Missing pieces.** Cancellation, teardown, error paths, ownership transfer, observability, rollback, and deletion of replaced code.
+9. **Safety.** Does the plan verify the side effect across every changed lifecycle, event, concurrency, or adapter handoff?
+10. **Testability.** Do checks exercise behavior at the changed boundary instead of mocking around it?
+11. **Alignment.** Does the plan match current decisions and explicit user constraints?
 
 Plan reviewers explicitly look for **gold-plating** — complexity the plan adds beyond MVP intent — and call it out.
 
@@ -54,9 +68,9 @@ Plan reviewers explicitly look for **gold-plating** — complexity the plan adds
 
 Plan reviewers return:
 
-- **Review receipt:** artifact path/hash, code baseline, reviewer lane, independence/model status, preflight status, and stable blocker IDs.
+- **Review receipt:** plan path/hash, code baseline, linked design revision when applicable, reviewer lane, independence/model status, preflight status, and stable blocker IDs.
 - **Verdict:** SHIP / SHIP WITH FIXES / REWRITE.
-- **Blockers:** issues that will produce wrong or non-compiling code. Must fix before execution begins.
+- **Blockers:** issues that make the plan incorrect, unsafe, non-executable, architecturally inconsistent, or unable to reach its finish line. Must fix before execution begins.
 - **Concerns:** issues worth fixing before execution but not strictly blocking (logging, teardown, error surfacing).
 - **Red flag hunt (scope discipline):** anything the reviewer thinks is gold-plating or premature abstraction.
 - **Praise (when warranted):** what the plan gets right.
@@ -71,6 +85,7 @@ Plan author:
 - **Concerns are fixed by default.** Decline only with a reason recorded in the plan.
 - **Scope/red-flag items** get resolved by removing complexity, not by arguing it's justified.
 - **Editorial changes need no re-review.** Lane-specific changes need only a delta review from that lane. Full re-review is required only when scope, architecture, safety, or the evidence contract changes.
+- **Material architecture changes return to design review.** Do not resolve them by adding implementation tasks to the plan.
 - If the plan needs a REWRITE verdict, discard and start over — do not patch an incoherent plan.
 
 Authors who reflexively "fix" every flag without thinking are as broken as authors who dispatch despite blockers. Atlas watches for both.
@@ -90,12 +105,14 @@ After two review passes without new runtime or authoritative evidence, stop revi
 ## Integration with other protocols
 
 - **[code-review.md](code-review.md)** reviews code after it's written. This protocol reviews the plan before. Both happen.
-- **[design-first.md](design-first.md)** reviews designs, which are the layer above plans. A plan that disagrees with its own design is a rewrite, not a fix.
+- **[implementation-planning.md](implementation-planning.md)** defines when the durable plan is required and how it is maintained.
+- **[design-first.md](design-first.md)** approves the architecture above the plan. A plan that disagrees with its design needs a design delta or rewrite, not a quiet fix.
 - **[verifying-claims.md](verifying-claims.md)** applies inside review: a reviewer who asserts "this won't compile" should cite the line. A reviewer who says "there's a Sendable issue" should name the type.
 
 ## Minimum executable shape
 
 - Default to two to four checkpoints.
 - Require each task to enable the first working path, protect a high-severity invariant, or delete superseded behavior.
+- Use stable task IDs and separate implementation from validation status.
 - Prefer focused checks during implementation and one broader verification pass at the packet boundary.
 - For hardware-dependent behavior, use deterministic simulator or local-transport checks during development and one physical pass against the exact final candidate revision unless physical feasibility is the unresolved question.

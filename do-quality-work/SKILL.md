@@ -1,6 +1,6 @@
 ---
 name: do-quality-work
-description: Apply an evidence-first quality workflow for non-trivial implementation, review, planning, decisions, cross-platform work, and validation. Use when Codex must choose proportionate protocols and reviewers, verify claims, protect safety or platform boundaries, size an executable slice, assess a plan or code change, record a material decision, or capture a durable learning without letting process overhead replace progress.
+description: Apply an evidence-first quality workflow for non-trivial implementation, architecture design, durable implementation-plan documents, review, decisions, cross-platform work, and validation. Use when Codex must determine whether up-front design or a tracked plan is required, strengthen overall system architecture, choose proportionate protocols and reviewers, verify claims, protect safety or platform boundaries, size an executable slice, assess a plan or code change, record a material decision, or capture a durable learning without letting process overhead replace progress.
 ---
 
 # Do Quality Work
@@ -9,7 +9,7 @@ description: Apply an evidence-first quality workflow for non-trivial implementa
 
 Resolve the decision's main uncertainty with authoritative evidence, then do the smallest coherent amount of work that safely answers it.
 
-When a project has live protocols, use them for domain invariants, exact commands, and local acceptance criteria. This skill still governs protocol dominance, review budget, evidence freshness, and reporting unless a project protocol explicitly documents a higher-severity exception. Use the bundled files under `references/protocols/` only when the project has no applicable protocol or when this skill itself is under review.
+When a project has live protocols, use them for domain invariants, exact commands, and local acceptance criteria. This skill still governs design/plan depth, protocol dominance, review budget, evidence freshness, and reporting unless a project protocol names the higher-severity risk and explains the exception. Generic task-count, new-file, or subagent rules are not higher-severity exceptions. Use the bundled files under `references/protocols/` only when the project has no applicable protocol or when this skill itself is under review.
 
 Retrieve relevant project decisions, playbooks, persona learnings, and calibration before meaningful work when prior context can change the approach. Do not reload the same material repeatedly during one artifact cycle.
 
@@ -28,14 +28,42 @@ Run the cheapest decisive probe early. If it is blocked, record the blocker and 
 
 Do not add a fixture, simulator extension, evidence schema, or test harness until existing tests and the real product path have been assessed. New infrastructure must answer a named decision question that cannot be answered more cheaply.
 
-For a simple read-only answer or lightweight spot-check, use only the decision question, current artifact, cheapest probe, and stop condition. Do not manufacture blockers, prerequisites, or evidence fields that add no information.
+For a simple read-only answer, lightweight spot-check, or direct implementation with obvious acceptance, use only the decision question, current artifact or boundary, cheapest probe, and stop condition. Do not manufacture blockers, prerequisites, or evidence fields that add no information.
 
-## 2. Choose the Work Unit
+## 2. Decide Design And Plan Artifacts
+
+Before production implementation, classify the work:
+
+- **Direct implementation:** Use for a narrow, local, reversible change with one obvious owner, an established architecture, and one clear acceptance path. No design or plan artifact is required.
+- **Durable implementation plan:** Require for material multi-module or cross-platform work, multiple checkpoints, multiple production implementers or planned handoffs, significant refactors, migrations/deletions, ownership-boundary changes, material validation gates, or work expected to span sessions.
+- **Architecture design plus implementation plan:** Require when work changes system shape, public contracts, persistence, shared/platform responsibility, lifecycle/concurrency/authority, safety/security/privacy, migration strategy, or credible scale/cost behavior.
+
+Use the repository's existing plan and design locations. If none exist, use `docs/plans/` and `docs/designs/`.
+
+For a durable plan, read [implementation-planning.md](references/protocols/implementation-planning.md) and use [implementation-plan-template.md](references/implementation-plan-template.md) when the project has no template.
+
+When the architecture gate triggers, read [design-first.md](references/protocols/design-first.md), create and approve the design before detailed implementation tasks, and use [architecture-design-template.md](references/architecture-design-template.md) when the project has no template.
+
+The design establishes responsibilities, boundaries, invariants, tradeoffs, migration, and consequences. The implementation plan turns that approved direction into checkpoints, task IDs, acceptance, rollback, progress, and evidence receipts. Do not use a checklist to conceal an unresolved architecture decision, and do not use design work to postpone a reversible first slice.
+
+Keep the plan as a living execution-control surface:
+
+- one accountable owner and one active checkpoint;
+- separate implementation and validation status;
+- a current code baseline and reviewed plan revision;
+- updates at checkpoint boundaries;
+- compact completed-checkpoint receipts; and
+- a design delta or linked corrective plan when ownership, interfaces, data flow, safety/security boundaries, or the finish line changes materially.
+
+Do not start production implementation while a required design or plan blocker remains unresolved.
+
+## 3. Choose the Work Unit
 
 Default an implementation plan to two to four checkpoints. Each discrete task must do at least one of these:
 
 - enable the first working end-to-end path;
-- protect a high-severity invariant; or
+- protect a high-severity invariant;
+- produce authoritative evidence for a blocking claim; or
 - delete or simplify superseded behavior.
 
 Choose one work unit:
@@ -43,6 +71,8 @@ Choose one work unit:
 - **Micro-slice:** Use for high risk, uncertain blast radius, poor reversibility, destructive work, or isolated diagnosis.
 - **Capability packet:** Use for related low- or medium-risk changes with one rollback path and verification envelope. This is the normal default.
 - **Broader checkpoint:** Use for release, deploy, migration, or final integration readiness.
+
+For direct implementation, the complete capability packet may be one patch plus its focused acceptance check.
 
 Do not batch unrelated work to reduce ceremony. Do not fragment one behavior into checkpoints whose review and evidence cost exceeds their value.
 
@@ -54,16 +84,17 @@ Changed seam -> current callers -> side effect -> preserved invariant -> authori
 
 Treat preservation of safety code as insufficient when the event, lifecycle, concurrency, adapter, or ownership seam changes. Trace the side effect across the changed handoff and add focused regression evidence for any uncovered boundary.
 
-## 3. Select Protocols Without Stacking Ceremony
+## 4. Select Protocols Without Stacking Ceremony
 
 Choose one **primary protocol** for the current decision or phase and, when a distinct material risk exists, at most one **risk overlay**. More overlays require separate named risks and separate decision questions. A task may move through different primary protocols over time; do not run all applicable protocols simultaneously.
 
 | Current task or phase | Primary protocol | Typical risk overlay |
 | --- | --- | --- |
-| Plan that will direct implementation | `plan-review.md` | safety/domain/parity reviewer |
+| Architecture direction or system-shape decision | `design-first.md` | parity/domain/safety/security review |
+| Durable implementation-plan creation | `implementation-planning.md` | domain/safety/parity constraints |
+| Formal plan approval | `plan-review.md` | one specialist reviewer when needed |
 | Production implementation or refactor | `code-review.md` | safety/security/domain review |
-| System shape or durable interface decision | `design-first.md` | `steelman.md` or `red-team.md` |
-| Cross-platform behavior or shared/platform boundary | `cross-platform-parity.md` | domain or safety review |
+| Cross-platform migration or parity assessment after architecture approval | `cross-platform-parity.md` | domain or safety review |
 | Negative claim such as missing, broken, or impossible | `verifying-claims.md` | none |
 | Test, build, runtime, release, or hardware confidence | `verification-toolchain.md` | `pre-mortem.md` for fragile cutovers |
 | Material disputed or hard-to-reverse decision | `council-review.md` | only the specialist evidence needed |
@@ -74,7 +105,7 @@ Use `learning-retrieval.md`, `learning.md`, `persona-calibration.md`, `playbook-
 
 Read the primary protocol and risk overlay once per artifact cycle. Reread only when the protocol, scope, risk, or artifact class changes.
 
-## 4. Budget Review and Escalation
+## 5. Budget Review and Escalation
 
 Use the fewest independent reviewers that cover the material risks:
 
@@ -96,7 +127,7 @@ Run council review only when:
 
 Use two to five relevant council members, not every active persona. One independently executed reviewer gets one vote. Multiple role lenses produced by one agent remain one vote. Verified unresolved blockers override consensus.
 
-## 5. Keep Reviews Fresh and Actionable
+## 6. Keep Reviews Fresh and Actionable
 
 Every formal review must identify:
 
@@ -113,9 +144,9 @@ Ask reviewers for decision-changing findings. Do not ask for open-ended "opportu
 
 A lightweight owner spot-check is not a formal review. It needs only the artifact, decision question, evidence inspected, and verdict; add a receipt or blocker IDs only when another agent must act on them.
 
-## 6. Execute and Verify
+## 7. Execute and Verify
 
-Run narrow high-signal checks while iterating. Run broader suites at a cohesive packet or checkpoint boundary, before commit/push/deploy, and before claiming completion when the later action depends on them. Do not rerun an expensive gate unless a relevant change invalidated its result.
+Run narrow high-signal checks while iterating. Run broader suites at a cohesive packet or checkpoint boundary, before commit/push/deploy, and before claiming completion when the later action depends on them. For direct implementation, focused evidence is sufficient when it exercises or compiles the affected path and no named risk or repository gate requires broader coverage. Do not rerun an expensive gate unless a relevant change invalidated its result.
 
 For safety or actuator paths, verify the applicable invariants at the changed boundary, including:
 
@@ -128,7 +159,7 @@ Use deterministic simulator or local-transport checks during development. When p
 
 Report only what the evidence establishes. Keep source values, commands, simulated state, requested output, and measured/applied effects distinct.
 
-## 7. Learn Proportionately
+## 8. Learn Proportionately
 
 For a non-trivial session, run one session-level learning assessment at the root:
 
@@ -138,9 +169,11 @@ For a non-trivial session, run one session-level learning assessment at the root
 
 Ask a subagent for a learning note only when its work exposed a surprising, reusable fact. Update persona calibration only for a useful catch, material miss, false positive, noisy review, or meaningful assignment-fit signal.
 
+Direct implementation does not trigger a learning assessment solely because it changes logic.
+
 Write durable learning only when it is within the user's scope and the active memory policy allows it. Otherwise propose the exact update without making it.
 
-## 8. Complete and Report
+## 9. Complete and Report
 
 Follow the user's instruction and the repository's established workflow for commits. Implementation work should be committed when requested or when the repository workflow requires a completed-task commit. Read-only reviews and plans do not need commit narration. Never mix unrelated user changes into a task commit.
 
@@ -169,6 +202,7 @@ Use only the files selected by the workflow:
 - [playbook-library.md](references/protocols/playbook-library.md)
 - [team-health.md](references/protocols/team-health.md)
 - [code-review.md](references/protocols/code-review.md)
+- [implementation-planning.md](references/protocols/implementation-planning.md)
 - [plan-review.md](references/protocols/plan-review.md)
 - [design-first.md](references/protocols/design-first.md)
 - [cross-platform-parity.md](references/protocols/cross-platform-parity.md)
@@ -180,3 +214,5 @@ Use only the files selected by the workflow:
 - [decision-record.md](references/protocols/decision-record.md)
 - [verifying-claims.md](references/protocols/verifying-claims.md)
 - [verification-toolchain.md](references/protocols/verification-toolchain.md)
+- [implementation-plan-template.md](references/implementation-plan-template.md)
+- [architecture-design-template.md](references/architecture-design-template.md)

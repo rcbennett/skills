@@ -1,4 +1,4 @@
 interface:
   display_name: "Do Quality Work"
-  short_description: "Run evidence-first quality workflows"
-  default_prompt: "Use $do-quality-work to establish decisive evidence, choose a proportionate protocol and review lane, execute the smallest safe slice, and report verified outcomes and gaps."
+  short_description: "Design, plan, and verify complex work"
+  default_prompt: "Use $do-quality-work to choose the required architecture and plan depth, create a durable checkpoint plan when needed, and verify the smallest safe implementation path."

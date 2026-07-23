@@ -1,93 +1,169 @@
 # Protocol: Design First
 
-**Principle:** Design is not a phase; it's a habit. Every change considers its impact on the system, every important change earns a design review, and every architectural choice is made with flexibility, maintainability, and scalable growth in mind — without overspending today for capacity we don't yet need.
+**Principle:** Changes that reshape a complex system need an explicit architecture decision before implementation planning. Strengthen the whole system rather than making only the local edit convenient.
 
-## Two kinds of design, both required
+## Contents
 
-- **UX design** — how the user experiences the change. Owned by Kenji (interaction) and Noa (visual/brand), informed by Sam (product intent) and Dr. Voss (domain correctness).
-- **Software/system design** — how the code and infrastructure are shaped. Owned by Morgan (architecture), with the relevant platform engineer(s), Linnea for shared logic, Diego for backend, and Mira for cost shape.
+- [Choose the design depth](#choose-the-design-depth)
+- [Design the user experience when it changes](#design-the-user-experience-when-it-changes)
+- [Architecture gate](#architecture-gate)
+- [Start from the current architecture](#start-from-the-current-architecture)
+- [Required design questions](#required-design-questions)
+- [Compare real alternatives](#compare-real-alternatives)
+- [Design artifact](#design-artifact)
+- [Design review](#design-review)
+- [Handoff to implementation planning](#handoff-to-implementation-planning)
+- [Failure signals](#failure-signals)
 
-A change that touches users needs both. A change that's purely internal still needs software design thinking.
+## Choose the design depth
 
-## Every change asks five questions
+Use the smallest design artifact that resolves the architectural uncertainty:
 
-Before any non-trivial implementation starts, the owner (or Atlas on their behalf) answers:
+- **Local design check:** For a narrow, reversible change that stays inside an established component and ownership boundary. Answer the boundary/invariant questions in working notes; no durable design document is required.
+- **Architecture note:** For a meaningful refactor or extension of an existing pattern where the target shape is mostly established. Record the current boundary, proposed responsibility change, alternatives, migration, and consequences.
+- **Full architecture design:** For a new subsystem or a material change to ownership, public interfaces, persistence, control/data flow, safety/security, platform sharing, scalability, or operational behavior.
 
-1. **What part of the system does this touch, and what's downstream of it?** Layer boundaries, shared-core impact, per-platform reach.
-2. **Does this change the shape of the system?** New module, new dependency, new data flow, new abstraction — or a one-file tweak?
-3. **What's the flexibility cost?** Does this make a likely future change harder? Does it lock us into a vendor, a schema, or a pattern we'll regret?
-4. **What's the maintenance cost?** Who has to understand this next quarter? Is it legible without the author in the room?
-5. **What's the cost-at-scale picture?** If usage grows 10× or 100×, does this hold? Per-read Firestore costs, Cloud Function invocation costs, Storage egress — roughed out, not ignored. See [model-selection.md](model-selection.md) and the FinOps persona for cost review.
+Do not skip design because implementation seems urgent. Do not require a design document merely because several files change.
 
-If the answers are small and obvious, proceed. If they aren't, the change needs a design review.
+## Design the user experience when it changes
 
-## When a design review is required
+For a material user-facing flow or state-model change, define the intended outcome, primary flow, empty/loading/error/cancel/recovery states, accessibility contract, platform-native adaptation, and observable success before building views. This may be a short product/UX note or a section of the implementation plan; it does not by itself require a full architecture design.
 
-A design review is mandatory for:
+When both the experience and system shape change, approve them together far enough to prove that the architecture supports the intended states and failure behavior. Do not use visual detail to hide unresolved behavior, and do not force identical controls across platforms when native adaptations preserve the same product intent.
 
-- **New modules, services, or collections** (new Firestore collection, new SharedCore type family, new Cloud Function, new admin surface).
-- **Changes to public APIs** of `SharedCore`, `VideoGPSCore`, or server endpoints.
-- **Data model changes** that touch persisted state (Firestore schemas, on-device project files, overlay export formats).
-- **Cross-cutting patterns** (logging, error handling, concurrency model, caching).
-- **Anything with material cost or scaling implications** (new query patterns, new background jobs, new media pipelines).
-- **Anything the author or Atlas thinks warrants one.** Opting in is always allowed; opting out is not.
+## Architecture gate
 
-Pure bug fixes, localized refactors, copy changes, and dependency version bumps don't require a design review unless they ripple.
+Create and approve a durable design before implementation when work introduces or materially changes any of these:
 
-## What a design review looks like
+- module, service, subsystem, collection, or external dependency;
+- public API, persisted model, protocol, event contract, or shared schema;
+- cross-platform/shared-core responsibility or platform-adapter boundary;
+- lifecycle, concurrency, authority, ownership, caching, or synchronization model;
+- safety, security, privacy, auth, billing, or destructive side-effect boundary;
+- migration with dual-read, dual-write, compatibility, or rollback complexity;
+- performance, availability, scale, or cost shape;
+- system-wide pattern such as observability, error handling, configuration, or dependency injection; or
+- a large refactor whose success depends on assigning responsibilities differently.
 
-Lightweight by default. The author produces a short design note — not a novel — covering:
+If the work stays inside an approved boundary and preserves its contracts, use the local design check and then choose direct implementation or durable planning under the planning gate.
 
-1. **Problem & intent** — what are we trying to enable, in one paragraph.
-2. **Proposed shape** — the components, data, and interactions. Prose or a sketch; no mandatory format.
-3. **Alternatives considered** — at least one, with why it was rejected. "No alternatives considered" is a red flag.
-4. **Flexibility & reversibility** — what's easy to change later, what's hard, and why that's acceptable.
-5. **Scale & cost** — expected load today, plausible load at 10× and 100×, and what breaks first at each step.
-6. **Open questions** — what we don't know yet that would change the design.
+## Start from the current architecture
 
-Reviewers (per [code-review.md](code-review.md), so: different persona, different model) assess:
+Before proposing a target shape:
 
-- Does the proposal actually solve the stated problem?
-- Does it respect existing architecture (`decisions.md`, layer boundaries, local-first, SharedCore ownership)?
-- Is it the simplest shape that leaves the right doors open?
-- What's missing from the "what breaks first" analysis?
-- Is the cost curve acceptable *and* bounded?
+1. Read current architecture, requirements, decisions, and relevant incident evidence.
+2. Identify the components and owners that currently perform the behavior.
+3. Trace the important input-to-side-effect path, including lifecycle, concurrency, persistence, failure, and teardown.
+4. Record the architectural constraint or failure that prevents the desired outcome.
+5. Separate verified current behavior from assumptions.
 
-Outcome: **approve**, **request changes**, or **reject with a counter-proposal**. Approved designs become short ADR entries in `decisions.md`.
+Avoid architecture-by-analogy. A pattern used elsewhere is evidence only after its constraints are shown to match.
 
-## Designing for where we're going, without paying for it today
+When a blocking architecture claim cannot be resolved through existing code, docs, traces, or a disposable test, allow a bounded non-production feasibility spike. Record its decision question, time/size limit, disposal or promotion rule, and result. A spike must not silently become the production architecture or bypass design approval.
 
-We start small and intend to stay inexpensive as long as we can — *and* we refuse to paint ourselves into corners. The balance:
+## Required design questions
 
-- **Prefer reversible choices.** If we can defer a decision without cost, defer it.
-- **Pick boring technology where it won't bottleneck us.** Fancy only earns its keep when it solves a real problem.
-- **Put abstractions at the seams, not inside components.** A clean module boundary lets us swap implementations later; premature interfaces inside a module are pure cost.
-- **Keep shared logic in `SharedCore` / `VideoGPSCore`.** Per-platform reimplementation is a scaling tax we will not pay.
-- **Budget for growth, don't build for it.** Document the scaling cliff ("this design works fine to ~N users / M writes/day; past that, do X"). Don't implement X until we see N/2 on the horizon.
-- **Instrument early, optimize later.** Cheap telemetry now beats expensive archaeology later.
-- **Cost is a design constraint.** Mira (FinOps) reviews designs whose cost curve isn't obviously benign; Yusuf (Finance) weighs in when the choice affects burn meaningfully.
+Answer the questions that materially apply:
 
-## UX design lives by the same rules
+1. **Problem and outcome:** What system capability or quality must improve?
+2. **Scope and non-goals:** Which users, platforms, components, and behaviors are included or explicitly excluded?
+3. **Responsibility and ownership:** Which component owns each decision, state, side effect, and lifecycle? At what scope—process, device, account, store, service, or system—is that authority unique, and how is it enforced or fenced? What must platform/UI/adapter layers not own?
+4. **Boundaries and contracts:** Which public interfaces, data models, events, or protocols change?
+5. **Invariants:** What must remain true across success, failure, retry, cancellation, replacement, and teardown?
+6. **Data and control flow:** How does information and authority move through the system?
+7. **Failure containment:** How does the design fail closed or degrade safely? How is partial failure recovered?
+8. **Migration and compatibility:** How do current callers and mixed deployed versions move without parallel authorities or an indefinite compatibility layer? Distinguish code, data, and protocol rollback, and identify any forward-fix-only step.
+9. **Observability:** What evidence proves the architecture is operating as designed?
+10. **Evolution:** Which likely future changes are easy or hard after this decision?
+11. **Performance, scale, and cost:** Which workload inputs drive behavior, what is the first credible cliff, and what measured threshold would trigger a redesign?
+12. **Security, privacy, and safety:** Which trust or physical boundaries apply?
+13. **Reversibility:** What can be rolled back, and what becomes expensive to change?
 
-- **Design before pixels.** Flows and states before a single view is written.
-- **Empty, loading, and error states are first-class** — Kenji won't approve a design that only shows the happy path.
-- **Platform-native affordances** over cross-platform uniformity.
-- **Brand tokens** (Noa) are consumed, not overridden inline.
-- **Accessibility is a design input,** not a polish pass.
+Do not invent scale numbers or future requirements. Name uncertainty and its revisit trigger.
 
-## Atlas's role
+When consolidating behavior from existing implementations, inventory their differences before choosing a canonical path. Classify each difference as intentional platform adaptation, product policy, defect, or unresolved; do not silently make the first implementation the specification.
 
-- Asks the five questions at task intake. Decides whether a design review is required.
-- Picks reviewers (persona + model) and gates implementation on design approval for covered changes.
-- Makes sure approved designs land in `decisions.md` and that `requirements.md`/`PROJECT_STATE.md` reflect scope honestly.
-- Keeps the bar honest: no ceremonial design reviews for changes that don't need them; no design-by-ambush for changes that do.
+## Compare real alternatives
 
-## Signals that this is failing
+Consider at least two credible shapes when the decision is material. Include the current/no-change path when it is genuinely viable.
 
-- A new Firestore collection appears without a design note.
-- Two platforms implement the same logic independently and drift.
-- A feature ships that would have failed at 2× current load.
-- A design review happens *after* the code is written (this is a post-mortem, not a review).
-- Cost surprises at the end of the month that nobody predicted.
+For each option, state:
 
-Any of these is Atlas's problem to surface.
+- responsibilities and interactions;
+- benefits;
+- complexity and operational cost;
+- failure modes;
+- migration/rollback cost;
+- where it is the better choice; and
+- evidence that would change the decision.
+
+Do not create a weak alternative merely to justify the preferred design.
+
+## Design artifact
+
+Follow the repository's existing design convention. If none exists, use:
+
+```text
+docs/designs/<YYYY-MM-DD>-<short-slug>.md
+```
+
+Start from [../architecture-design-template.md](../architecture-design-template.md) when no project template exists, and remove irrelevant sections.
+
+The approved artifact records:
+
+- code and design baseline;
+- scope and non-goals;
+- decision question;
+- evidence and current architecture;
+- constraints and invariants;
+- alternatives and tradeoffs;
+- proposed responsibilities, interfaces, and flow;
+- failure handling and observability;
+- migration and rollback;
+- accepted consequences; and
+- revisit triggers.
+
+Record the material decision in the repository's decision log or ADR location. The design is the canonical system-shape artifact; the decision record briefly preserves why it was chosen and links the design rather than duplicating it.
+
+## Design review
+
+Default to one independent architecture reviewer. Add one domain, safety, security, data, platform, or operations reviewer only when a distinct material risk needs specialist judgment.
+
+Reviewers ask:
+
+- Does the current-state model match the code and evidence?
+- Does responsibility have one clear owner?
+- Does the design solve the system problem rather than relocate it?
+- Are boundaries cohesive and platform divergence intentional?
+- Are failure, teardown, migration, rollback, and observability complete?
+- Is the abstraction justified by current needs and credible evolution?
+- Are performance, cost, security, privacy, and safety risks bounded?
+- Is the design specific enough to guide a plan without prematurely specifying every class or method?
+
+Outcome: **approve**, **approve with required changes**, or **reject with a stronger alternative**. Resolve blocking design findings before creating implementation tasks.
+
+The named decision owner accepts the review outcome, resolves blockers, and changes the artifact status to approved. A reviewer advises and gates; they do not silently become the decision owner.
+
+## Handoff to implementation planning
+
+An approved design hands these items to `implementation-planning.md`:
+
+- target responsibilities and ownership;
+- changed boundaries and current callers;
+- preserved invariants;
+- migration order;
+- compatibility and rollback constraints;
+- authoritative acceptance evidence; and
+- explicit non-goals.
+
+The implementation plan may choose sequencing and local mechanics, but it must not quietly redesign these boundaries. A material design change returns to a design delta and decision update.
+
+## Failure signals
+
+- A plan or code change assigns responsibility before current ownership is traced.
+- A new abstraction exists only to make tests or future possibilities easier.
+- Multiple clients or services make the same policy decision independently.
+- Migration creates two long-lived authorities.
+- Failure, teardown, or rollback is deferred until implementation.
+- The design optimizes one module while worsening the overall data/control flow.
+- Review occurs after the architectural code is already written.

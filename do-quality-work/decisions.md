@@ -1,5 +1,23 @@
 # Decisions
 
+## 2026-07-23: Add architecture-gated durable implementation planning
+
+**Status:** accepted
+
+**Decision:** Add a three-tier workflow to `do-quality-work`: direct implementation for narrow reversible changes, a durable checkpoint plan for material coordinated work, and an approved architecture design followed by a durable plan when system shape or ownership changes. Treat the design as the canonical system-shape artifact, the decision record as concise rationale, and the plan as the living execution-control surface.
+
+**Context:** Detailed checkpoint plans had improved sequencing, scope control, handoffs, evidence tracking, and reversibility on complex cross-platform refactors, but the skill only described plan review rather than when to create or maintain a repository plan. Its design guidance also did not reliably gate implementation on a verified current architecture, explicit ownership, alternatives, migration, failure handling, or approval. Requiring the same artifacts for a narrow fix would recreate the ceremony and slow progress that the skill is intended to prevent.
+
+**Options considered:** Keep plans and design notes optional and chat-based; require a design and plan for every production change; use conditional architecture and planning gates with a no-document path for narrow work.
+
+**Rationale:** Conditional gates preserve speed while giving architecture-shaping work durable control. Architecture-first and cross-platform forward tests produced clear ownership, migration, rollback, parity, and first-slice decisions; a narrow-fix test remained a patch plus focused evidence and an owner spot-check after proportionality wording was tightened.
+
+**Consequences:** `SKILL.md`, `design-first.md`, `implementation-planning.md`, `plan-review.md`, `code-review.md`, and `cross-platform-parity.md` now define the design-to-plan-to-execution lifecycle. New architecture and implementation-plan templates bind baselines, review revisions, decisions, checkpoints, separate implementation/validation status, evidence, rollback, and receipts. Material cross-platform consolidation must adjudicate existing divergence before selecting canonical behavior. Plans stay current at checkpoint boundaries and return to design review when responsibilities or contracts change; direct local work creates no design or plan artifact.
+
+**Verification:** The skill package validator, internal Markdown file/heading-link audit, generated UI-metadata checks, semantic assertions, and `git diff --check` passed. Architecture-heavy offline sync, narrow local correction, and shared cross-platform policy-refactor forward tests all passed after delta review of their material findings.
+
+**Revisit trigger:** Revisit if plans become retrospective transcripts, review or artifact duplication outweighs coordination value, narrow fixes accumulate ceremony, implementation repeatedly drifts from approved architecture, or the gates miss material ownership, migration, safety, or platform constraints.
+
 ## 2026-05-31: Reconcile backup-only governance protocols with current learning system
 
 **Status:** accepted

@@ -1,55 +1,79 @@
-# Protocol: Cross-Platform Parity & Inclusion
+# Protocol: Cross-Platform Parity And Inclusion
 
-**Principle:** TerraFlo is one product across many clients. If a feature makes sense everywhere, it ships everywhere. Divergence is allowed when platforms *genuinely* differ, and it is always a conscious, documented choice — never an accident of who happened to build it first.
+**Principle:** One product can use platform-native adapters without duplicating product policy. Platform scope and intentional divergence are design decisions, not implementation accidents.
 
-## Platforms we care about
+## Establish the actual platform set
 
-- **macOS** — primary focus today
-- **iOS** — actively shipping
-- **Android** — launch-critical for public launch, but not yet launch-ready
-- **Web admin** — different audience (admins, not athletes); parity rules below apply only where scope overlaps
-- **Future platforms** (e.g. tvOS, watchOS) — slot in under the same rules when added
+Read the project's current requirements, source targets, release state, and platform decisions. Do not rely on a hard-coded or remembered client list.
 
-## The parity rule
+For every affected behavior, record:
 
-For every user-facing feature or behavior change:
+- the intended product outcome;
+- each in-scope client or platform family;
+- current and target status;
+- shared policy owner;
+- platform-owned adaptation;
+- authoritative acceptance evidence; and
+- any intentional exclusion with rationale and owner.
 
-1. **Decide the intended platform scope up front**, not after the code is written.
-   - Options: *All athlete clients* / *macOS + iOS only* / *Single-platform by design* / *Admin-only*.
-   - Default scope is **all athlete clients** unless there's a reason otherwise.
-2. **Record the scope in `requirements.md`** with per-platform status, and keep it current in `PROJECT_STATE.md`.
-3. **If the feature lands on one platform first**, the others are tracked as open items owned by their respective personas (Ishaan / Aarav). They don't quietly fall off the list.
-4. **If a feature is single-platform by design**, write one sentence of justification in `requirements.md` or `decisions.md`. "The tvOS client doesn't have BLE pairing because tvOS doesn't expose Core Bluetooth peripheral APIs" is a good justification. "Only built it for macOS because that's what I was working on" is not.
+Default to all clients that can support the product outcome. An incremental rollout is a sequence, not permission to lose the remaining platforms.
+
+## Sequence architecture and parity work
+
+When work changes shared/platform responsibility, public contracts, lifecycle authority, or system shape, use `design-first.md` as the primary architecture phase and treat parity as a design constraint. After the architecture is approved, use this protocol as the primary migration and parity-assessment phase.
+
+During design, probe the most constrained materially different platform early. During implementation, exercise representative adapters from each platform family soon enough that their lifecycle, storage, input, or media constraints can still change the architecture.
+
+## Adjudicate existing divergence before consolidation
+
+Before moving duplicated behavior into a shared owner, inventory the current implementations:
+
+| Platform/client | Current behavior and owner | Intended classification | Target owner/adaptation | Evidence or decision needed |
+|---|---|---|---|---|
+| | | intentional adaptation / product policy / defect / unresolved | | |
+
+Do not declare one existing client canonical by default. Resolve product-policy and unresolved differences explicitly. Preserve platform adaptations only when they support the same product intent or a documented platform-specific requirement.
+
+Create shared semantic or conformance examples for the decided behavior before deleting divergent owners. Runtime evidence must still cover representative real adapters; shared tests alone do not prove platform integration.
+
+## Keep policy shared and adaptation local
+
+Put portable product rules, state transitions, calculations, ordering, and policy decisions in the project's shared domain layer when one exists. Platform clients should normally own only:
+
+- native API and event translation;
+- UI/input presentation;
+- lifecycle hooks;
+- platform storage or media primitives behind approved contracts; and
+- native side effects that cannot live in the shared layer.
+
+Do not force technology sharing where the runtimes cannot share code. In that case, define one semantic contract and conformance evidence so separate adapters do not become separate policy authorities.
 
 ## Legitimate reasons to diverge
 
-- **Platform capability differs** (BLE APIs, filesystem access, background execution, input model).
-- **Platform idioms differ** (macOS menu bar vs iOS sheet vs web toolbar — same outcome, different affordance).
-- **Audience differs** (admin tooling vs athlete tooling).
-- **Hardware differs** (watch screen size, tv input model).
+- Platform capability or operating-system policy differs.
+- Native interaction or accessibility idioms differ while preserving the same outcome.
+- Audience, hardware, screen, or input model materially differs.
+- A staged rollout is explicit, owned, time-bounded, and visible in project truth.
 
-## Not legitimate reasons
+Schedule, convenience, language preference, or “the other client did not ask” are not architectural reasons to diverge.
 
-- "I only had time for one platform." → Track the others as open work.
-- "The other platform engineer didn't ask for it." → Inclusion is the default; they shouldn't have to ask.
-- "It's easier in Swift." → Move the logic into `SharedCore` so Kotlin gets it for free.
+## Keep status honest
 
-## Shared logic goes in the shared core
+Use the repository's requirements, project-state, release, or plan documents to record current per-platform status. Do not claim parity from a shared build alone, and do not claim a feature on a platform whose runtime path was not validated.
 
-If a feature has business logic that could apply to more than one platform, it belongs in `SharedCore` (KMP) or `VideoGPSCore` (Swift-only when it's genuinely Swift-only). Reimplementing the same rule in Swift and Kotlin is a parity bug waiting to happen — Linnea is the default owner of shared logic, and she catches drift between platforms.
+Final parity evidence should include:
 
-## Atlas's role
+- shared semantic or contract checks;
+- focused runtime evidence for every in-scope materially different adapter;
+- lifecycle, failure, and teardown behavior where relevant;
+- a static ownership/deletion audit after convergence; and
+- documented intentional divergence and remaining rollout work.
 
-- **At task intake:** asks "what's the platform scope?" before dispatching. Updates `requirements.md` with the answer.
-- **At review time:** confirms per-platform status is recorded honestly, even if only one platform is landing first.
-- **At release time:** no release notes claim a feature is available on a platform where it isn't — and the docs reflect divergence, not wishful thinking.
-- **Launch-critical gaps stay visible:** Harper keeps Android parity and launch-gap work visible until the public-launch bar is honestly met.
+## Failure signals
 
-## Signal that this is failing
-
-- A feature appears on macOS, ships, and six months later iOS users notice it's missing.
-- `requirements.md` claims parity that the code doesn't have.
-- The same logic exists in two platform view layers and drifts.
-- A cross-platform bug is fixed on one platform only.
-
-Any of these is Atlas's problem to surface and fix.
+- One platform implementation becomes the specification without adjudication.
+- The same policy decision remains in multiple client layers.
+- A platform adapter reacquires shared policy during migration.
+- A feature is reported as cross-platform from shared tests only.
+- Project status omits an unimplemented client or an intentional exclusion.
+- A cross-platform defect is fixed on only one client without a scoped decision.
