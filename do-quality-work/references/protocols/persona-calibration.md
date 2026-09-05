@@ -31,6 +31,7 @@ Use `management/calibration/team-calibration.md` only when a project needs cross
 ## <YYYY-MM-DD> - <Session or review label>
 
 **Role in session:** owner / reviewer / advisor / executive
+**Model/context:** when known and relevant to interpreting the evidence
 **Evidence:** files, tests, review findings, user feedback, AAR, or final result
 **Signal:** bug caught / bug missed / false positive / noisy review / strong assignment / weak assignment / verification gap
 **Impact:** quality, speed, safety, trust, rework, or cost
@@ -55,12 +56,12 @@ Prefer simple counts and recent examples over complex scoring:
 ## How to use calibration
 
 - Prefer reviewers with recent evidence of useful signal in the domain.
-- Add a second reviewer when calibration shows a persona has blind spots.
+- Adjust the brief or reviewer selection when calibration shows a relevant blind spot. Add a lane only for a distinct material risk under the main review policy.
 - Update `persona.md` when calibration changes mission, review lens, risks, success signals, or development focus.
 - Use `learnings.md` for one-off lessons and `calibration.md` for evidence about judgment quality over time.
 - Do not punish experimentation. Calibration is for routing and improvement, not blame.
 
-## Atlas's role
+## Accountable owner
 
 - Capture calibration evidence when review quality changes trust in a persona.
 - Use calibration before assigning reviewers or accepting high-impact recommendations.

@@ -1,6 +1,6 @@
 # Protocols
 
-Protocol references for proportionate, evidence-led work. Project-local protocols take precedence when present.
+The [main skill](../../SKILL.md) owns workflow selection and policy. Project protocols supply domain invariants, exact commands, acceptance, and explicit gates. These references describe selected work; they do not independently trigger extra workflows. Preserve materially stricter project gates and resolve contradictory generic ceremony against current user scope.
 
 | Protocol | Purpose |
 |---|---|
@@ -16,13 +16,13 @@ Protocol references for proportionate, evidence-led work. Project-local protocol
 | [design-first.md](design-first.md) | Require explicit current-state analysis, alternatives, target ownership, migration, and architectural approval when system shape changes. |
 | [cross-platform-parity.md](cross-platform-parity.md) | Establish current platform scope, adjudicate divergence before consolidation, and keep policy shared while platform adapters stay native. |
 | [workspace-and-document-lifecycle.md](workspace-and-document-lifecycle.md) | Preserve work before cleanup, reconcile task-owned Git/temp state, maintain durable truth, and retire completed work artifacts visibly. |
-| [model-selection.md](model-selection.md) | Match models to work and use model diversity at important decision boundaries without adding ceremony. |
+| [model-selection.md](model-selection.md) | Use tools for waiting, route by required judgment and total cost, and favor capability when uncertain. |
 | [red-team.md](red-team.md) | High-risk work gets attacked for exploit paths, operational failures, hidden assumptions, missing rollback, weak observability, and abuse cases before it is trusted. |
 | [steelman.md](steelman.md) | Serious alternatives are rejected only after their strongest coherent case, win conditions, and decision-changing evidence are understood. |
 | [pre-mortem.md](pre-mortem.md) | Launches, deploys, migrations, and fragile changes assume future failure first, then define prevention, detection, rollback, and owners. |
 | [council-review.md](council-review.md) | Escalate irreversible, disputed, genuinely cross-domain, or explicitly requested decisions to a small relevant council. |
 | [decision-record.md](decision-record.md) | Material choices leave a durable record of context, alternatives, rationale, consequences, evidence, and revisit triggers. |
-| [verifying-claims.md](verifying-claims.md) | Subagent findings are claims, not facts. Triangulate "X is missing/broken" before propagating or acting. Lived experience trumps audit findings. |
+| [verifying-claims.md](verifying-claims.md) | Subagent findings are claims, not facts. Triangulate "X is missing/broken" before propagating or acting. Reconcile user observations with current evidence. |
 | [verification-toolchain.md](verification-toolchain.md) | Establish the minimum evidence contract, admit fixtures deliberately, and verify changed boundaries at the right time. |
 
 ## Meta-rules

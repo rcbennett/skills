@@ -2,18 +2,9 @@
 
 **Principle:** Reject the strongest version of an alternative, not the easiest version to dismiss. A steelman review protects decisions from premature convergence and uncharitable reasoning.
 
-## When steelman review is required
+## When to use this lens
 
-Run steelman review when:
-
-- Rejecting a serious alternative design, implementation path, product behavior, vendor, process, or protocol change.
-- Disagreeing with a plausible user proposal or replacing it with a different recommendation.
-- Choosing between options where cost, risk, schedule, user value, or reversibility point in different directions.
-- A council review has dissent or a viable minority path.
-- Red-team or pre-mortem findings make the preferred path look weaker than expected.
-- Rob asks for a steelman, strongest argument, charitable case, or counterargument.
-
-Do not use steelman review to keep impossible options alive. If hard evidence rules out an option, cite the evidence and move on.
+Use when selected by the main skill for a serious disputed alternative whose strongest case could change a consequential decision, or when requested. It can be a paragraph in an existing design review. Do not keep evidence-ruled-out options alive or require a separate workflow for routine disagreement.
 
 ## Inputs
 
@@ -56,7 +47,7 @@ For small decisions, this can be a compact paragraph. For architecture, safety, 
 
 ## Integration with other protocols
 
-- [council-review.md](council-review.md) should consume steelman findings before agreement on important decisions.
+- [council-review.md](council-review.md) can consume these findings only after its escalation trigger is met.
 - [red-team.md](red-team.md) may provide the strongest objection to the preferred path.
 - [decision-record.md](decision-record.md) records alternatives considered and why the chosen path won.
 - [design-first.md](design-first.md) uses steelman findings to avoid locking in a brittle system shape.

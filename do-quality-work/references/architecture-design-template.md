@@ -72,7 +72,7 @@ Identify the workload inputs, likely next changes, design seams that support the
 
 ## Migration And Compatibility
 
-Describe how existing consumers and mixed deployed versions move without dual authority. Separate code, data, and protocol rollback; identify any forward-fix-only step and how interrupted or repeated migration is handled.
+Describe how existing consumers and mixed deployed versions move without dual authority. List the replaced paths and associated wiring/configuration/tests to retire. For temporary compatibility, state the verified need, canonical owner, removal owner, observable removal condition, and bounded follow-up. For a permanent adapter, state the verified supported external contract, maintenance owner, and one canonical policy authority. Separate code, data, and protocol rollback; identify any forward-fix-only step and how interrupted or repeated migration is handled.
 
 For consolidation work, add a divergence table that classifies each current behavior as intentional adaptation, product policy, defect, or unresolved before choosing the canonical behavior.
 

@@ -23,7 +23,7 @@ Use the smallest design artifact that resolves the architectural uncertainty:
 - **Architecture note:** For a meaningful refactor or extension of an existing pattern where the target shape is mostly established. Record the current boundary, proposed responsibility change, alternatives, migration, and consequences.
 - **Full architecture design:** For a new subsystem or a material change to ownership, public interfaces, persistence, control/data flow, safety/security, platform sharing, scalability, or operational behavior.
 
-Do not skip design because implementation seems urgent. Do not require a design document merely because several files change.
+Do not skip design because implementation seems urgent. Do not require a design document merely because several files change. The main skill governs depth and authorization. A medium change may use one canonical note with distinct design and execution sections. A local design check does not waive required independent code review.
 
 ## Design the user experience when it changes
 
@@ -35,7 +35,7 @@ When both the experience and system shape change, approve them together far enou
 
 Create and approve a durable design before implementation when work introduces or materially changes any of these:
 
-- module, service, subsystem, collection, or external dependency;
+- module, service, subsystem, collection, or external dependency whose introduction materially changes system responsibilities or risk;
 - public API, persisted model, protocol, event contract, or shared schema;
 - cross-platform/shared-core responsibility or platform-adapter boundary;
 - lifecycle, concurrency, authority, ownership, caching, or synchronization model;
@@ -72,14 +72,14 @@ Answer the questions that materially apply:
 5. **Invariants:** What must remain true across success, failure, retry, cancellation, replacement, and teardown?
 6. **Data and control flow:** How does information and authority move through the system?
 7. **Failure containment:** How does the design fail closed or degrade safely? How is partial failure recovered?
-8. **Migration and compatibility:** How do current callers and mixed deployed versions move without parallel authorities or an indefinite compatibility layer? Distinguish code, data, and protocol rollback, and identify any forward-fix-only step.
+8. **Migration and compatibility:** How do current callers and mixed deployed versions move without parallel authorities or an unbounded temporary compatibility layer? Distinguish permanent supported adapters from temporary migration paths. Distinguish code, data, and protocol rollback, and identify any forward-fix-only step.
 9. **Observability:** What evidence proves the architecture is operating as designed?
 10. **Evolution:** Which likely future changes are easy or hard after this decision?
 11. **Performance, scale, and cost:** Which workload inputs drive behavior, what is the first credible cliff, and what measured threshold would trigger a redesign?
 12. **Security, privacy, and safety:** Which trust or physical boundaries apply?
 13. **Reversibility:** What can be rolled back, and what becomes expensive to change?
 
-Do not invent scale numbers or future requirements. Name uncertainty and its revisit trigger.
+Do not invent scale numbers or future requirements. Name uncertainty and its revisit trigger. Fully repair the affected component when needed for the requested result; defer unrelated areas. If coherent ownership requires expanding agreed scope, identify that dependency and ask before expanding. A small diff that creates split authority is not the preferred design.
 
 When consolidating behavior from existing implementations, inventory their differences before choosing a canonical path. Classify each difference as intentional platform adaptation, product policy, defect, or unresolved; do not silently make the first implementation the specification.
 
@@ -119,7 +119,7 @@ The approved artifact records:
 - alternatives and tradeoffs;
 - proposed responsibilities, interfaces, and flow;
 - failure handling and observability;
-- migration and rollback;
+- migration and rollback, with verified needs/removal conditions for temporary compatibility or the supported contract, maintenance owner, and canonical policy authority for a permanent adapter;
 - accepted consequences; and
 - revisit triggers.
 
@@ -142,7 +142,7 @@ Reviewers ask:
 
 Outcome: **approve**, **approve with required changes**, or **reject with a stronger alternative**. Resolve blocking design findings before creating implementation tasks.
 
-The named decision owner accepts the review outcome, resolves blockers, and changes the artifact status to approved. A reviewer advises and gates; they do not silently become the decision owner.
+The authorized decision owner accepts the review outcome, resolves blockers, and changes the artifact status to approved. Routine in-scope architecture decisions do not require another user approval. Ask about material product tradeoffs, scope expansion, or irreversible consequences not already authorized. A reviewer advises and gates; they do not silently become the decision owner.
 
 ## Handoff to implementation planning
 

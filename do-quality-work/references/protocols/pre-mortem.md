@@ -2,17 +2,9 @@
 
 **Principle:** Before high-impact work ships, assume it failed and explain why. A pre-mortem turns plausible future failure into prevention, detection, and recovery work now.
 
-## When pre-mortem is required
+## When to use this lens
 
-Run a pre-mortem before:
-
-- Beta releases, launches, deploys, migrations, rollbacks, and production configuration changes.
-- Hardware-control, safety, security, privacy, auth, billing, admin, or PII work.
-- Public features, externally visible promises, customer-impacting workflow changes, or support-sensitive changes.
-- Large refactors, new services, data-model changes, vendor changes, or irreversible process changes.
-- Any task where Rob asks "what could go wrong," "how could this fail," "release readiness," or "pre-mortem."
-
-Small local edits do not need a pre-mortem unless they are part of a release or high-risk path.
+Use when selected by the main skill for a fragile operational cutover or consequential recovery uncertainty, or when the user requests it. A routine public feature or deploy alone does not create another ceremony. Integrate failure narratives into existing rollout/review work when sufficient.
 
 ## Inputs
 
@@ -47,7 +39,7 @@ After narratives are written:
 2. Identify watch items that can ship with explicit monitoring and rollback.
 3. Confirm rollback or recovery for each high-severity narrative.
 4. Decide whether any manual checklist, runbook, smoke test, alert, or support note is needed.
-5. Feed unresolved high-risk items into council review when the change is an important decision.
+5. Escalate to council only when an unresolved tradeoff meets the main skill's trigger; importance alone is insufficient.
 
 ## Required output
 

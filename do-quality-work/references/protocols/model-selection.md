@@ -1,81 +1,50 @@
 # Protocol: Model Selection
 
-**Principle:** Pick models deliberately for the work and the risk. Model diversity is a property of an important review boundary, not a reason to add reviewers or rerun bounded work.
+## Decision rule
 
-## Selection tiers
+Optimize total cost to reach a correct, maintainable accepted result, including context transfer, inference, coordination, retries, and review. Choose the least costly path confidently capable of meeting the task's quality and risk requirements. **When suitability is uncertain, favor a more capable model.** Do not require a cheap failed attempt before using appropriate capability.
 
-Treat the live harness roster as the only source of truth. Do not preserve model names in this protocol; they drift faster than the selection principles.
+The [main skill](../../SKILL.md) owns workflow and review gates. Select the route at meaningful task/phase boundaries, not every tool call. Model capability, reasoning effort, reviewer independence, and number of agents are separate choices.
 
-| Tier | Strengths | Good for |
+## Routing
+
+| Work | Default route | Escalate when |
 |---|---|---|
-| **Flagship reasoning** | Deep reasoning, long-context synthesis, judgment | Architecture, ambiguous specs, security review, high-stakes decisions |
-| **Implementation-focused** | Strong code editing and repository execution | Routine implementation, most code review, multi-file changes |
-| **Fast scout** | Speed, low cost, broad parallel scouting | First-pass triage, bounded transforms, repository search |
+| Process/build waiting or deterministic status retrieval | Direct tool and bounded completion wait; no monitor agent | Failure, credible stall, or unexpected state needs judgment |
+| Clear extraction, structured summary, mechanical transformation | Lightweight model with low supported reasoning if tools alone are insufficient | Ambiguity, conflicting evidence, unreliable output |
+| Established-pattern implementation with clear acceptance | Balanced coding model, usually medium reasoning | Hidden coupling, changed ownership/contracts, uncertain failure handling |
+| Ordinary independent code review | Fresh capable coding reviewer with enough effort to trace the behavior | Architecture or specialist risk needs greater capability |
+| Architecture, substantial refactor, uncertain diagnosis | More capable model with high reasoning | Especially demanding unresolved reasoning justifies greater effort |
+| Safety, security, irreversible migration, complex authority | More capable owner and competent independent specialist lanes | Preserve required evidence and expertise regardless of cost |
 
-Atlas typically operates on the current default frontier coding model, then reaches for implementation-focused or mini subagents to parallelize and get independent viewpoints.
+Do not classify by file count: a one-line concurrency fix can demand more judgment than a large mechanical edit. Keep the capable parent default unless the user asks to change it. Higher capability does not always require maximum effort.
 
-## How to pick
+## Runtime selection and dispatch
 
-Match model to task:
+Use the live runtime roster and supported effort combinations. Do not preserve a drifting model-name table in personas or this protocol. If the roster does not establish a choice, use current official guidance and observed task outcomes. Do not infer subscription dollar cost from API token prices.
 
-| Task shape | Default model |
-|---|---|
-| Design, architecture, ADR-worthy decisions | Flagship reasoning |
-| Security rules, auth, anything adversarial | Flagship reasoning |
-| Domain-heavy work (grade pipeline, metric correctness) | Flagship reasoning |
-| Multi-file refactor or cross-module change | Flagship reasoning or implementation-focused Codex |
-| Single-file, well-scoped implementation | Implementation-focused Codex |
-| Most code reviews | Implementation-focused Codex |
-| Targeted "find X in the repo" searches | Fast scout / mini |
-| Parallel scouting / "which of these files mention Y" | Fast scout / mini (many in parallel) |
-| Docs edits, mechanical renames | Fast scout / mini |
+For each non-default dispatch, explicitly select model and a supported reasoning effort when the tool permits it. Provide the objective, relevant files/evidence, boundary, acceptance, escalation condition, and necessary context. Prefer a bounded or empty history fork when it supplies sufficient context and enables the override; do not discard context needed for correctness merely to reduce tokens.
 
-When uncertain, start cheaper. Escalate to a larger model when the smaller one stalls, hedges, or returns generic work. Do not escalate just because a first pass had flaws — fix the brief first.
+Do not assume named profile selection, a model change for the running parent, or an API-only parameter is available. Check the current tool contract. A saved file or a model's self-description does not prove which configuration ran. Verify runtime selection through execution metadata when available, and distinguish requested from confirmed-effective settings. If an override is unavailable, use the current capable runtime and disclose the limitation when it matters. Do not create separate user-visible tasks solely to simulate switching.
 
-## Model diversity at decision boundaries
+Create persistent worker profiles only when requested or justified by recurring work and effective selection can be tested. Preserve existing account/provider settings. Do not weaken permissions, restore credentials, or add a paid service merely to make routing work.
 
-Blind spots can correlate within a model family, so a different model is valuable when review judgment can change an architecture choice or a final production decision.
+## Delegate only when it helps
 
-Use these defaults:
+Use independent execution for required reviews and bounded parallel tasks whose expected benefit exceeds dispatch and integration cost. Avoid several scouts repeating a search that one tool call answers. Keep one integration owner, distinct lanes, and concise evidence-backed results. Do not make the parent redo each worker's entire investigation; inspect the evidence needed for integration and consequential claims.
 
-- Initial architecture or durable-boundary decision → prefer one reviewer on a different model or tier from the author.
-- Final production packet → prefer one different-model reviewer when the change is non-trivial.
-- Actual safety, security, or irreversible boundary change → use two independently executed reviewers on different models or tiers when available, with partitioned lanes.
-- Blocker-only delta → the original reviewer and model may verify the narrow fix.
-- Low-risk mechanical or editorial work → model diversity is optional.
+Reviewer competence comes before model diversity. Prefer a different capable model when available, but never downgrade a reviewer merely to get another model name. Distinct personas within one execution are not independent reviews. An unavailable alternate vendor is not by itself a reason to stop if a suitable independent execution is available.
 
-Do not count model diversity as an additional reviewer. One agent applying several personas or role lenses remains one independently executed review and, in a council, one vote.
+## Monitoring and escalation
 
-## Dispatching with model overrides
+Launch the authorized build/process once. Retain command, directory, candidate identity, process ID, log location, and required completion criteria. Use native completion events or bounded waits with backoff consistent with responsiveness. Avoid repeated model turns over unchanged logs, copying whole logs, or speculative commentary.
 
-When dispatching a subagent, set `model` explicitly for any non-default choice. Examples:
+On completion, inspect the exit status and concise relevant result. Successful compilation proves only what was compiled. On failure or unexpected state, collect enough error context and route diagnosis to appropriate capability. A cheap monitor does not invent repairs or restart processes repeatedly. Do not claim all waiting is free; the goal is to avoid unnecessary inference and context ingestion.
 
-- Research sweep across many files → multiple fast-scout / mini subagents in parallel.
-- Architecture proposal → flagship reasoning subagent adopting the relevant architecture or domain owner.
-- Routine single-platform view implementation → implementation-focused subagent.
-- Review of the above → a different flagship or implementation-focused model when the review sits at an architecture or final-production boundary.
+Escalate promptly on a material missed requirement, uncertain architecture, conflicting evidence, or unreliable results. One focused brief correction can help a clearly underspecified task; do not repeat cheap attempts through a capability mismatch. Preserve useful evidence during escalation.
 
-The persona and the model are independent choices. The same domain persona on a fast scout and on a flagship reasoner are different instruments; pick by the task, not the title.
+## Evaluate value
 
-## Cost & cache hygiene
+Use existing dispatch/receipts for selected model, effort, and any material routing rationale or escalation. Do not create a routing ledger per small task. Compare accepted-result quality, elapsed delivery time, rework, review signal, and available usage on comparable tasks. Promote the more capable route when cheaper attempts increase total work or weaken maintainability. Do not report estimated savings as measured billing.
 
-- Keep conversations with Atlas warm: avoid gratuitous 5-minute+ idle gaps that invalidate the prompt cache (see ScheduleWakeup guidance when using `/loop`).
-- Parallelize independent subagent calls in one dispatch block — one round-trip, multiple results.
-- Don't use flagship reasoning for work an implementation-focused model will nail; don't use mini scouts for work that needs judgment.
-- If a fast-scout result looks confidently wrong, that's a signal to re-dispatch to an implementation-focused or flagship model, not to argue with the scout.
-
-## When to revisit this protocol
-
-- The harness capabilities change materially. Update the tier guidance only when selection behavior should change; do not add a drifting SKU list.
-- We notice a systematic blind spot in a pairing. Rotate the defaults.
-- Persona calibration shows a reviewer or owner has changed strengths, blind spots, false-positive rate, or assignment fit.
-- Cost becomes a real constraint. Tighten the "default cheaper, escalate on stall" rule.
-
-## Atlas's role
-
-- Picks model and persona for every dispatch. Both decisions are logged implicitly by the dispatch itself.
-- Applies model diversity at architecture, final-production, safety, security, and irreversible decision boundaries.
-- Does not add reviewers merely to satisfy model variety; every reviewer has a distinct lane and decision question.
-- Tracks which pairings produce real bugs caught vs. noise, and adjusts defaults over time.
-- Uses `management/personas/<member-slug>/calibration.md` when available before choosing reviewers for high-impact work.
-- Teaches, doesn't gatekeep: when a choice surprises Rob, I explain why I picked it.
+There is no cache-keepalive timer or polling quota in this policy. Discover actual environment behavior when relevant; never manufacture turns just to keep a cache warm.

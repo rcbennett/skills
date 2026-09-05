@@ -1,4 +1,4 @@
 interface:
   display_name: "Do Quality Work"
-  short_description: "Design, verify, and leave work clean"
-  default_prompt: "Use $do-quality-work to choose the right design and plan depth, execute with evidence, and reconcile repository and document artifacts as you go."
+  short_description: "Maintainable design, review, and scoped cleanup"
+  default_prompt: "Use $do-quality-work to implement a coherent maintainable change, retire superseded paths, select suitable models, and verify with proportionate testing and independent review."

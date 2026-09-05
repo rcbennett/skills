@@ -1,53 +1,18 @@
 # Protocol: Team Health
 
-**Principle:** Self-improvement depends on the conditions around the team, not only individual skill.
+Use when a requested team assessment or concrete coordination failure makes the team's working conditions relevant. The main skill governs workflow selection; do not create a team-health check merely because a milestone completed.
 
-## When to run a team-health check
+For agent teams, evaluate observable outputs rather than inferred human feelings:
 
-Run a lightweight team-health check during Talent Planning, executive retrospectives, repeated collaboration failures, major staffing changes, or after a milestone where learning quality matters.
+| Dimension | Evidence to inspect |
+|---|---|
+| Uncertainty and dissent | Risks, mistakes, and disagreements were surfaced and resolved with evidence |
+| Dependability | Owners delivered or preserved a precise blocker and next action |
+| Clarity | Decision rights, scope, integration ownership, and review lanes were explicit |
+| Impact | Work advanced the requested outcome and maintainability |
+| Learning | Prior validated lessons changed later behavior when relevant |
+| Focus | Routing avoided duplicate effort, unnecessary personas, and costly context transfer |
 
-## Dimensions
+Use `strong`, `adequate`, `needs improvement`, or `unknown` with concrete examples. Unknown is not failure. Do not infer psychological safety, motivation, or emotion from a fictional persona narrative.
 
-Assess these as `strong`, `adequate`, `needs improvement`, or `unknown`:
-
-- Psychological safety: team members surface uncertainty, mistakes, and dissent without hiding risk.
-- Dependability: owners do what they said they would do, or make blockers visible early.
-- Structure and clarity: roles, decision rights, task ownership, and review paths are clear.
-- Meaning: members understand why the work matters.
-- Impact: members can see whether their work changed product or team outcomes.
-- Learning culture: session learnings, AARs, calibration, and playbooks actually change future work.
-- Load and focus: work is routed to the right personas without chronic overload or scattered attention.
-
-## Output shape
-
-```markdown
-# Team Health Check: <date>
-
-**Scope:**
-**Evidence:**
-
-| Dimension | Rating | Evidence | Action |
-| --- | --- | --- | --- |
-| Psychological safety |  |  |  |
-| Dependability |  |  |  |
-| Structure and clarity |  |  |  |
-| Meaning |  |  |  |
-| Impact |  |  |  |
-| Learning culture |  |  |  |
-| Load and focus |  |  |  |
-```
-
-Store durable project-level checks in `management/team-health/<YYYY-MM-DD>.md` when useful. Otherwise include the findings in Talent Planning or the executive retrospective.
-
-## Rules
-
-- Do not use team-health ratings as a substitute for performance evidence.
-- Treat `unknown` as a prompt to gather evidence, not as a failure.
-- Convert weak dimensions into concrete actions with owners and review cadence.
-- Update executive learnings when management practice needs to change.
-
-## Atlas's role
-
-- Ask whether the team's learning conditions are helping or blocking improvement.
-- Surface role ambiguity, overloaded personas, unsafe silence, and unclear decision rights.
-- Tie team-health actions back to persona memories, calibration, and protocols.
+Keep results in the requested assessment or existing team review. Produce only material improvement actions with an owner and observable success criterion. Apply persona/calibration changes only when authorized and useful; otherwise recommend them. Do not generate another report when an existing artifact already holds the result.

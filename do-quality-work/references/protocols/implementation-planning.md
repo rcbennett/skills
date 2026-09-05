@@ -19,10 +19,10 @@
 Use the lightest artifact that can safely coordinate the work:
 
 - **No durable plan:** Use for a narrow, local, reversible change with one obvious owner and acceptance path.
-- **Implementation plan:** Use when material work spans modules or platforms, needs multiple checkpoints, production implementers, or planned handoffs, changes an ownership boundary, requires coordinated migration/deletion, carries a material validation gate, or is expected to continue across sessions. Read-only subagents or reviewers do not by themselves trigger a durable plan.
+- **Implementation plan:** Use when material work spans modules or platforms, needs multiple checkpoints, production implementers, or planned handoffs, changes an ownership boundary, requires coordinated migration/deletion affecting consumers, data, contracts, or rollback, carries a material validation gate, or is expected to continue across sessions. Read-only subagents or reviewers do not by themselves trigger a durable plan.
 - **Architecture design plus implementation plan:** Use when `design-first.md` triggers. Approve the target architecture before turning it into implementation tasks.
 
-Do not use a long checklist to compensate for an unresolved design decision or unavailable acceptance environment.
+Do not use a long checklist to compensate for an unresolved design decision or unavailable acceptance environment. Removing an unused private helper alone does not require a durable plan. Planning depth is separate from independent code review. For medium work, one document may contain the accepted architecture and execution sequence; keep separate artifacts when depth or handoffs justify them.
 
 ## Plan location and identity
 
@@ -79,7 +79,9 @@ Keep these elements:
    - next action.
 5. **Completion contract**
    - final authoritative validation;
-   - deletion/static ownership audit where applicable;
+   - consumer migration and evidence-based retirement of replaced code and associated wiring, configuration, flags, dependencies, fixtures, and implementation-specific tests;
+   - for temporary compatibility, verified need, canonical policy owner, removal owner, observable removal condition, and bounded follow-up;
+   - for a permanent adapter, verified supported external contract, maintenance owner, and one canonical policy authority without an invented retirement commitment;
    - documentation/decision reconciliation;
    - scoped source-control and temporary-artifact reconciliation;
    - active, durable, generated, and historical document disposition; and

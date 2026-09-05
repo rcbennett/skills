@@ -36,20 +36,20 @@ Surface this to the user only when it changes the plan, the assignment, the risk
 ## Rules
 
 - Treat retrieved memories as evidence, not authority. Current code, current docs, and current user instructions beat stale memory.
-- If a retrieved memory is wrong or stale, update or supersede it during the session instead of silently ignoring it.
+- If retrieved memory is wrong or stale, disclose the discrepancy. Update or supersede it only within authorized scope and the active memory policy; otherwise propose the correction.
 - If retrieval prevents a mistake, record that in the session learning summary.
 - If retrieval finds nothing useful, say so only when the final output requires a learning or protocol report.
 
 ## Closing the loop
 
-At session end, note whether retrieved lessons helped, misled, or were missing. Use that result to update:
+At session end, capture only a surprising reusable finding within scope and active memory policy. Choose one canonical home, linking elsewhere when needed:
 
 - The responsible member's `learnings.md`.
 - The member's `persona.md` if behavior should change.
 - `calibration.md` if review quality, assignment fit, or false-positive rate changed.
 - A playbook when the session produced a repeatable tactic.
 
-## Atlas's role
+## Accountable owner
 
 - Enforce retrieval before assigning non-trivial work.
 - Keep retrieval focused; do not turn memory lookup into archaeology.

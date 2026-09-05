@@ -12,7 +12,7 @@ Create or update a decision record when:
 - Council review reaches agreement on a path forward.
 - Red-team, steelman, or pre-mortem review leads to accepted risk or a meaningful tradeoff.
 - A protocol or skill operating rule changes.
-- Rob asks for a decision record, ADR, durable decision, or rationale.
+- the user asks for a decision record, ADR, durable decision, or rationale.
 
 Mechanical edits, tiny copy changes, and fully reversible local fixes do not need a decision record unless they alter a durable rule.
 

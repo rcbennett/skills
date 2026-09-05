@@ -1,6 +1,6 @@
 # Persona and Performance Templates
 
-Use these templates when the user wants a structured deliverable. Adapt headings to the context and omit sections that add no value.
+Use these templates only when structure helps the requested deliverable. The main team-management skill determines assess versus update mode; templates never authorize mutations. Omit empty or irrelevant fields. Engineering review and model routing remain owned by do-quality-work.
 
 ## Team Capability Map
 
@@ -68,6 +68,7 @@ Use `persona.md` as the canonical persona definition. Store durable member-speci
 ## <YYYY-MM-DD> - <Session or review label>
 
 **Role in session:** owner / reviewer / advisor / executive
+**Model/context:** when relevant and known
 **Evidence:**
 **Signal:** bug caught / bug missed / false positive / noisy review / strong assignment / weak assignment / verification gap
 **Impact:**
@@ -131,13 +132,13 @@ Use `persona.md` as the canonical persona definition. Store durable member-speci
 
 ## Task Assignment Plan
 
-Use this before execution. Every task must have an assigned team member or group, and the executive persona should contribute the routing rationale.
+Use this only for coordination that benefits from a table. Ordinary execution uses the current owner; a concise dispatch is sufficient. Executive rationale is useful only when an existing executive role affects the assignment.
 
 | Task | Executive routing rationale | Assigned owner(s) | Why best fit | Expected output | Collaborators/reviewers | Gap or hiring decision |
 | --- | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |  |
 
-If no existing persona is a strong fit, create the needed member directory and `management/personas/<member-slug>/persona.md` before assigning the task.
+A bounded role brief can cover one-off expertise. Create a persistent member only in authorized team setup/update work for a demonstrated recurring need.
 
 ## Talent Planning Review
 
@@ -151,12 +152,12 @@ Use this for an in-depth review of the current team and expansion needs.
 **Current Roster Source:** `management/personas/*/persona.md`
 **Evidence Used:**  
 **Research Performed:**  
-**Executive Management Review:**
-**Team Health Check:**
+**Executive Management Review (when relevant):**
+**Coordination Evidence (when relevant):**
 
-## Member Directory Changes
+## Proposed Changes (assess mode) Or Applied Changes (update mode)
 
-| Path | Change made | Reason |
+| Path | Proposed/applied change | Reason |
 | --- | --- | --- |
 | `management/personas/<member-slug>/persona.md` |  |  |
 | `management/personas/<member-slug>/learnings.md` |  |  |
@@ -207,10 +208,10 @@ Use this for an in-depth review of the current team and expansion needs.
 
 | Dimension | Rating | Evidence | Action |
 | --- | --- | --- | --- |
-| Psychological safety |  |  |  |
+| Surfaced uncertainty and dissent |  |  |  |
 | Dependability |  |  |  |
 | Structure and clarity |  |  |  |
-| Meaning |  |  |  |
+| Scope and purpose clarity |  |  |  |
 | Impact |  |  |  |
 | Learning culture |  |  |  |
 | Load and focus |  |  |  |

@@ -1,6 +1,6 @@
 # <Implementation Plan Title>
 
-> Delete sections that do not apply. Keep this document as an execution control surface, not a transcript.
+> Use only when durable planning is selected by the main skill. Delete irrelevant sections. A medium change may include its design decision here rather than creating another document. Status fields below are placeholders to update from actual evidence.
 
 ## Contents
 
@@ -79,7 +79,7 @@ Link the approved design revision and list only the boundaries and invariants th
 
 | Checkpoint | Implementation | Validation | Base/final revision | Result, blocker, or next action |
 |---|---|---|---|---|
-| 0. Plan and scope lock | complete | complete | | |
+| 0. Plan and scope lock | pending | not started | | |
 | 1. First working slice | pending | not started | | |
 | 2. <Second working slice or remaining migration> | pending | not started | | |
 | 3. <Convergence, deletion, or final validation> | pending | not started | | |
@@ -172,7 +172,10 @@ Track only task-created/adopted state and canonical documents affected by this p
 ## Definition Of Done
 
 - [ ] The approved architecture and ownership boundaries are present.
-- [ ] Superseded paths are deleted or intentionally documented.
+- [ ] In-scope consumers have migrated; superseded implementations and affected wiring, flags, config, dependencies, fixtures, and implementation-specific tests are reconciled.
+- [ ] Temporary compatibility has a verified consumer/deployment need, one canonical policy owner, removal owner, observable removal condition, and bounded follow-up; documentation alone is insufficient.
+- [ ] A permanent adapter has a verified supported external contract, maintenance owner, and one canonical policy authority; no invented retirement commitment is required.
+- [ ] Required independent reviews cover the final behavior; mechanical-only exceptions have an owner check and relevant automated evidence.
 - [ ] Required automated, runtime, and physical evidence is current for the final candidate.
 - [ ] Decisions and project truth documents are reconciled.
 - [ ] No unique task content exists only in unexplained local state.

@@ -1,5 +1,23 @@
 # Decisions
 
+## 2026-09-05: Consolidate maintainability, review, and model routing
+
+**Status:** accepted
+
+**Decision:** Make coherent architecture and complete retirement of replaced paths the completion standard. Independent review covers code and behavior-changing configuration/instructions, with a mechanical-only exception. Keep team assessment distinct from authorized roster changes. Route tools/models by required judgment and total accepted-result cost, favoring capability when suitability is uncertain.
+
+**Context:** Rob prioritized long-term maintainability, affected-component cleanup, verified compatibility needs, autonomous in-scope decisions, proportionate testing, and independent review. The prior packages duplicated workflow gates, allowed narrow logic self-review and merely documented obsolete paths, and used cheap-first routing under uncertainty.
+
+**Rationale:** One workflow authority plus focused references reduces contradictory behavior without losing architecture, safety, runtime, preservation, or project acceptance requirements. A fresh independent plan review required PR-01: a review-loop limit never waives blockers; only an admissible non-production probe or escalation is allowed.
+
+**Consequences:** Entry points, reviews, risk lenses, learning/team guidance, templates, and UI metadata are reconciled. The personal AGENTS.md references this workflow. The existing Astra/medium default and unrelated profiles are preserved. Named worker profiles remain deferred because this session cannot verify named selection; explicit dispatch overrides are validated separately. No generic cache-keepalive policy remains.
+
+**Verification:** Validation and independent final-review receipts are retained with the implementation packet at `/Users/rob/Documents/Codex/skill-assessments/2026-09-05/implementation/`. Record actual outcomes there; this decision does not substitute for execution evidence.
+
+**Supersedes:** Conflicting process/reporting implications of older entries below; their historical rationale remains preserved.
+
+**Revisit trigger:** Repeated leftover implementations, ambiguous review exceptions, unnecessary persona administration, expensive cheap-model retries, or runtime changes that make named profile routing useful and verifiable.
+
 ## 2026-07-23: Add preservation-first workspace and document lifecycle
 
 **Status:** accepted

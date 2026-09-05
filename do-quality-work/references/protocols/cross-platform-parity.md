@@ -16,7 +16,7 @@ For every affected behavior, record:
 - authoritative acceptance evidence; and
 - any intentional exclusion with rationale and owner.
 
-Default to all clients that can support the product outcome. An incremental rollout is a sequence, not permission to lose the remaining platforms.
+Use the user's agreed platform scope and current product contract. Inspect affected consumers across platforms, but do not silently expand implementation to every capable client. Surface contract breakage or necessary scope expansion before proceeding. Record any remaining rollout work explicitly.
 
 ## Sequence architecture and parity work
 

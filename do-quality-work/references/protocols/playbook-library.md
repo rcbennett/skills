@@ -52,7 +52,7 @@ management/personas/<member-slug>/playbooks/<slug>.md
 3. Update it when it prevents a mistake or fails to fit reality.
 4. Retire it when it becomes obvious, obsolete, or contradicted by current project behavior.
 
-## Atlas's role
+## Accountable owner
 
 - Promote repeated lessons into playbooks.
 - Prefer playbooks over re-explaining the same process in final summaries.

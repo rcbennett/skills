@@ -2,18 +2,9 @@
 
 **Principle:** Optimism is useful for building, but dangerous for trusting. A red-team review tries to break the artifact before users, attackers, devices, deploy systems, or production data do.
 
-## When red-team review is required
+## When to use this lens
 
-Run red-team review for:
-
-- Security, auth, privacy, PII, billing, admin, secret-handling, or public API changes.
-- Safety-sensitive behavior, hardware control, BLE/FTMS, motion-capable equipment, or device-command paths.
-- Launches, beta releases, deploys, migrations, public claims, and externally visible promises.
-- Architecture, vendor, data-model, process, or release decisions with high cost of being wrong.
-- Plans that depend on optimistic assumptions, incomplete evidence, model-generated analysis, or "this probably works" reasoning.
-- Any task where Rob asks for adversarial review, red team, abuse-case review, or failure hunting.
-
-Small reversible edits do not need red-team review unless they affect a high-risk surface.
+Use when selected by the main skill for a concrete adversarial or failure risk that can change the decision, or when the user requests adversarial review. Public APIs, releases, or model-generated analysis alone do not require another review. Include the lens in an existing competent review when sufficient.
 
 ## Inputs
 
@@ -57,7 +48,7 @@ The review lead converts findings into action:
 1. Separate blockers from risks that can be mitigated later.
 2. Prefer mitigations that reduce blast radius, add observability, preserve rollback, or make unsafe states impossible.
 3. Do not let red-team review become solution design by fear. A risk can be accepted when severity, likelihood, mitigation cost, and reversibility justify it.
-4. Feed material findings into council review when the reviewed artifact guides an important decision.
+4. Escalate to council only if the main skill's unresolved-tradeoff trigger is met; importance alone is insufficient.
 
 ## Required output
 
@@ -67,7 +58,7 @@ Report:
 - **Top risks:** findings grouped by severity.
 - **Mitigations:** accepted changes, deferred changes, and accepted residual risk.
 - **Evidence:** searches, tests, docs, logs, or manual checks used.
-- **Escalations:** items requiring Rob, live device access, credentials, production access, legal/security review, or follow-up protocol work.
+- **Escalations:** items requiring the user, live device access, credentials, production access, legal/security review, or follow-up protocol work.
 
 Keep the output proportional. A small release checklist may need three bullets; a safety, auth, or billing decision may need a full risk table.
 

@@ -1,6 +1,6 @@
 # Protocol: Learning As We Go
 
-**Principle:** Every work session is a learning event. What we discover must outlive the session, or we'll rediscover it next month.
+**Principle:** Preserve surprising, reusable evidence when it changes future work. The main skill selects this assessment; no lesson means no artifact.
 
 ## One root assessment per session
 
@@ -40,14 +40,14 @@ Keep entries short. If the same lesson applies across multiple future sessions, 
 
 ## Where learnings land
 
-Match the learning to the right home. More than one may apply.
+Choose one canonical home for the learning; link from other useful locations rather than copying the same record.
 
 | Kind of learning | Home |
 |---|---|
 | Why the code does something non-obvious | Inline comment (one line, WHY only) |
-| A product scope or per-platform status change | `requirements.md` + `PROJECT_STATE.md` |
+| A product scope or per-platform status change | The project's canonical requirements or platform-state document |
 | An architectural or library choice, and the reason | `decisions.md` (short ADR entry) |
-| A shared model or service shape changed | `data_structures.md` |
+| A shared model or service shape changed | The project's canonical schema/architecture reference |
 | A recurring user preference, correction, or validated judgment call | Active Codex memory update mechanism, or the project's documented memory policy |
 | A persona's responsibilities, skills, review lens, or watch-outs shifted | `management/personas/<member-slug>/persona.md` |
 | A persona learned a durable tactic, caution, preference, or coordination pattern | `management/personas/<member-slug>/learnings.md` |
@@ -74,14 +74,14 @@ Match the learning to the right home. More than one may apply.
 - Debugging recipes whose fix is already in the diff
 - Learnings that turn out to be wrong — those get *deleted*, not archived
 
-## Atlas's role
+## Accountable owner
 
 - Before final response, require one session-level learning assessment for the completed prompt, not a separate learning ritual after every subtask.
 - Ask a subagent for a learning note only when its work exposed a surprising fact likely to be reusable.
 - Do not reject otherwise complete subagent work for omitting a generic "nothing learned" section.
 - Update persona memories directly when a learning changes the persona's durable behavior, skills, risks, review lens, coordination style, or management practice and the active environment permits it.
 - Create or update calibration and playbooks when the learning belongs there instead of in the persona narrative.
-- Update protocols, conventions, or skill guidance when the session reveals a repeatable process gap that should change future agent behavior.
+- Update protocols, conventions, or skills for a demonstrated process gap only within authorized scope; otherwise propose the exact correction.
 - Treat persistent Codex memory writes as policy-gated. If the active memory policy requires explicit user instruction, do not write memory until that instruction exists; instead say exactly what should be remembered.
 - Periodically prune: stale memory records, outdated persona entries, and `decisions.md` entries that history has overturned. A doc that lies is worse than no doc.
 
@@ -96,8 +96,8 @@ Omit this request for routine bounded implementation, mechanical review, and det
 ## Signals that learning isn't happening
 
 - Two tasks in a row rediscover the same quirk.
-- A persona's `persona.md` or `learnings.md` hasn't been touched in months despite the area being worked heavily.
+- A previously validated lesson would have prevented a repeated mistake but was not retrieved. A file's modification age alone proves nothing about learning quality.
 - `decisions.md` entries disagree with the code and nobody has noticed.
 - Memory records cite files or functions that no longer exist.
 
-Any of these is a protocol-level bug and Atlas fixes it.
+Any of these is a protocol-level bug and the accountable owner addresses it.

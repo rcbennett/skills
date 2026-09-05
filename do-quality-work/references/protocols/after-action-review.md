@@ -10,7 +10,7 @@ Run an After Action Review when any of these happen:
 - The result differed materially from the plan.
 - A task produced a durable lesson for multiple personas.
 - A review exposed a weak protocol, stale memory, or wrong assignment.
-- A milestone, release, deploy, or Talent Planning review completes.
+- A milestone or team assessment reveals a surprising reusable failure or coordination lesson.
 - The executive persona sees the same failure mode repeat.
 
 For routine low-risk work, the normal session learning summary is enough.
@@ -66,10 +66,10 @@ Store project AARs in `management/reviews/after-action/<YYYY-MM-DD>-<slug>.md` w
 
 - Be blameless and specific. "The handoff lacked verification evidence" is useful; "the reviewer was sloppy" is not.
 - Do not manufacture root causes. Use `unknown` when evidence is thin.
-- AARs must produce changes, not just narratives.
+- AARs produce evidence-based proposed actions or authorized changes, not automatic out-of-scope mutations.
 - If the AAR identifies a protocol gap, update or propose the protocol change before calling the loop closed.
 
-## Atlas's role
+## Accountable owner
 
 - Trigger AARs when failure patterns repeat or a session's outcome differs from the plan.
 - Ensure action items have owners and storage locations.
