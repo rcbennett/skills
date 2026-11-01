@@ -25,12 +25,13 @@ For a direct local change that creates none of those, a before/after worktree ch
 Clean means:
 
 - no unique task content is stranded only in an unnamed or unexplained local state;
-- every task-created or task-adopted artifact is active for a stated reason, durably preserved, archived under the repository convention, or safely removed;
+- completed task changes are integrated into the intended branch and their feature branches and linked worktrees are removed;
+- other task-created or task-adopted artifacts are active for a stated reason, durably preserved, archived under the repository convention, or safely removed;
 - durable project truth matches the implemented state;
 - completed work artifacts no longer appear active; and
 - pre-existing or unrelated user state remains untouched and is reported when it affects the handoff.
 
-Clean does not require an empty global branch list, deletion of another task's state, merging beyond the user's request, or removal of evidence needed to resume blocked work.
+The standing completion policy in [SKILL.md](../../SKILL.md#7-reconcile-and-complete) authorizes ordinary task integration and cleanup without renewed approval. Respect later narrower instructions and actual repository gates. Clean does not require a global branch purge, deletion of another task's state, integration of unrelated work, or removal of evidence needed to resume blocked work.
 
 ## Establish ownership before cleanup
 
@@ -54,13 +55,13 @@ Treat read-only inventory as evidence, not authorization to remove what it finds
 
 ## Manage source-control state
 
-- **Branches:** Give task-created branches a purpose and retirement condition. Before deletion, prove that their unique content is merged, published, intentionally abandoned with authorization, or preserved elsewhere. After a squash merge, compare tree or content equivalence; ancestry or a "merged" label alone is insufficient.
-- **Worktrees:** Remove a task-created worktree only after its changes are clean or durably preserved and its branch still has an intentional home. Never remove a pre-existing worktree merely to make the list shorter.
+- **Branches:** After required review and checks pass, merge the scoped task changes into the intended integration branch using repository policy and verify that integration on the remote. Then delete the completed task's feature branches locally and remotely. Publication or a recovery archive alone does not replace integration. Before deletion, prove all task content is integrated or separately preserved with an explicit disposition; after a squash merge, compare tree or content equivalence because ancestry or a "merged" label alone is insufficient. Protect `main`, `release/*`, other designated integration/release branches, and unrelated or in-progress branches.
+- **Worktrees:** Remove completed task-created or explicitly task-adopted linked worktrees after inspecting tracked, untracked, and ignored content and preserving anything still needed. Move out of the worktree first and coordinate with agents still using it; use an ordinary worktree removal rather than forcing past unknown or dirty content. The primary checkout and unrelated worktrees remain. Removal of a linked worktree may precede deletion of its checked-out branch, after integration and preservation are verified.
 - **Stashes:** Use a stash as a temporary bridge, not durable storage. Before completion, apply and finish it, convert its contents into a named branch/commit/follow-up, or retain it with an owner and exact recovery action. Never drop an unknown or pre-existing stash.
 - **Untracked and ignored files:** Preview exact candidates and distinguish generated scratch from local configuration, credentials, fixtures, user data, and sole-copy evidence. Remove only task-created targets whose value or regenerability is proven.
-- **Remote state:** Delete remote branches only when the user request or repository workflow authorizes it and preservation has been verified. Report intentionally retained unmerged or review-bound branches.
+- **Remote state:** The standing task closeout authorization covers deletion of completed task feature branches after integration and preservation checks. Refresh the relevant remote state, stop if a target has acquired unreviewed commits, and use exact targets with lease protection where available. Prune stale tracking refs after deletion and verify live remote heads, local branches, and the worktree list; confirm cleanup leaves retained integration/release tips and unrelated work unchanged.
 
-An active unmerged feature branch can be a clean handoff when it is committed or otherwise preserved, named, owned, and paired with the exact next action.
+An unmerged or review-bound branch is an in-progress or blocked handoff, not completed work. Retain it only for a concrete blocker or narrower user instruction, with preserved content, an owner, and the exact next action. Do not stop at a draft/open PR when the remaining review, checks, and integration can be completed within scope. Ordinary integration and cleanup do not independently authorize release or deployment actions.
 
 ## Manage document roles
 
@@ -109,8 +110,9 @@ At each material checkpoint:
 
 At final completion or handoff, produce a compact closeout receipt:
 
-- baseline and final branch/revision;
-- task-created state removed, archived, or retained;
+- baseline, intended integration branch, and verified remote merge revision (or the specific gate preventing integration);
+- completed task branches deleted locally/remotely, linked worktrees removed, stale tracking refs pruned, and final-state verification;
+- any retained task branch/worktree or unfinished change, its concrete blocker or narrower user instruction, owner, and exact next action;
 - unique work and where it is durably preserved;
 - durable documents updated;
 - work documents closed, archived, or still active;
@@ -132,6 +134,8 @@ Do not perform terminal cleanup merely because progress stopped. Preserve a bloc
 
 Archive only after the work is explicitly completed, superseded, cancelled, or abandoned with authority.
 
+Resolve in-scope blockers autonomously when possible. Missing required review/checks, unavailable merge permissions, newly changed remote tips, or another agent's active worktree are concrete reasons to retain affected state; a preference to leave cleanup for later or seek redundant approval is not. Report integration and cleanup as pending until their actual gates pass.
+
 ## Guard destructive cleanup
 
 Before removing a branch, worktree, stash, file, directory, or document:
@@ -148,6 +152,8 @@ When ownership or value is ambiguous, preserve and report the item rather than g
 ## Failure signals
 
 - A clean current worktree hides unique content in a branch, worktree, or stash.
+- Finished implementation or a draft/open PR is reported as completed work without required integration and cleanup.
+- A completed task's feature branch or linked worktree remains without a specific blocker or narrower user instruction.
 - A task-created stash or temp directory survives without an owner or recovery action.
 - Branch deletion relies only on ancestry or a merged label after a squash merge.
 - Broad cleanup touches pre-existing, ignored, generated, or user data without classification.
