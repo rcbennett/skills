@@ -14,7 +14,7 @@ For refactors, trace `boundary -> callers -> side effect -> invariant -> evidenc
 
 Use live project instructions, manifests, CI configuration, and local protocols for exact commands. Confirm the target/script exists, prerequisites are present without exposing secrets, and the required runtime/environment can start. Do not hard-code old SDKs, device names, historical test counts, or credentials into generic guidance.
 
-Run narrow checks while iterating. At a coherent candidate/checkpoint, run required broader checks once. Repeat only for relevant changes, failures, or unresolved risks that invalidate confidence. Do not expand testing merely because time remains or because a file changed.
+Run narrow checks while iterating. At a coherent candidate or checkpoint, run the broader checks required for it. Use the [decision and evidence-reuse criteria](../../SKILL.md#6-verify-proportionately) before expanding or repeating checks.
 
 ## Build and process monitoring
 

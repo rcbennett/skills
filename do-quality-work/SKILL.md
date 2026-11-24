@@ -9,9 +9,29 @@ description: Design, implement, review, and verify maintainable changes with cle
 
 Prioritize architecture and long-term maintainability. Do the smallest coherent amount of work that fully solves the requested problem; this need not be the smallest diff. Fully refactor the affected component when necessary, including retirement of replaced paths. Defer unrelated areas. If a coherent solution requires scope expansion, identify the concrete dependency and ask before expanding.
 
-Current user instructions and higher-priority instructions govern scope and authorization. This entrypoint owns workflow selection, design/plan depth, review policy, model routing, and completion. Project protocols supply domain invariants, exact commands, acceptance criteria, and explicit project gates. Preserve materially stricter project gates; reconcile contradictory generic ceremony with the user's scope rather than stacking it. Bundled references describe how to perform selected work; they do not independently activate extra workflows. Use the relevant project procedure when available, otherwise the linked reference. When reviewing this skill, inspect its bundled references too.
+Current user instructions and higher-priority instructions govern scope and authorization. This entrypoint owns lead/worker execution, workflow selection, design/plan depth, review policy, and completion. The linked model-selection protocol owns model, effort, and runtime dispatch mechanics. Project protocols supply domain invariants, exact commands, acceptance criteria, and explicit project gates. Preserve materially stricter project gates; reconcile contradictory generic ceremony with the user's scope rather than stacking it. Bundled references describe how to perform selected work; they do not independently activate extra workflows. Use the relevant project procedure when available, otherwise the linked reference. When reviewing this skill, inspect its bundled references too.
 
 Proceed autonomously with authorized in-scope decisions after proportionate review. Design approval means acceptance by the authorized decision owner, not an automatic request for user confirmation. Ask about material product tradeoffs, scope expansion, or irreversible consequences not already authorized. Before an approval request, prepare the concrete reviewable work that is already authorized. A request to assess or review does not itself authorize edits.
+
+## Lead and worker execution
+
+The top-level lead orchestrates task-specific work. Assign every bounded work packet that produces implementation, diagnosis, research, review, or an authored artifact to a suitably instructed worker when the active runtime permits that delegation. Small size, close integration, or dispatch cost alone does not transfer execution to the lead. Use a coherent packet rather than a new agent for each tool call.
+
+The lead owns intent, scope, acceptance criteria, task decomposition, role and model selection, sequencing, coordination, inspection of returned evidence, integration decisions, and the final user response. Workers own their assigned execution and artifact changes, including corrective changes requested after review. The lead may inspect source and results to make those decisions; do not duplicate the worker's investigation or silently take over its implementation.
+
+Before dispatch, give the worker the outcome, owned files or responsibility, relevant live evidence and instructions, constraints, decision rights, acceptance and verification requirements, expected deliverable, and escalation condition. Tell it that other agents may share the workspace and it must preserve their edits. Select model and supported effort under [model-selection.md](references/protocols/model-selection.md). A persona name supplies a lens; it is not an execution or a substitute for a sufficient brief.
+
+This dispatch obligation applies to the top-level lead. Workers execute their assigned packets themselves and return evidence; they do not recursively apply the lead's dispatch obligation. A worker requests decomposition from the lead when a packet needs additional ownership. The lead may explicitly authorize a named nested assignment when it satisfies the same runtime constraints and has distinct useful work.
+
+Only these direct-execution exceptions apply:
+
+1. Direct conversation, clarification, status reporting, task coordination, and simple self-contained factual replies that require no substantive investigation or authored deliverable.
+2. Deterministic read-only retrieval, inspection needed for orchestration or acceptance, and process launch, completion, or waiting for an already selected verification command. Use tools rather than a monitoring agent. This exception does not authorize authoring a patch, repair, configuration, script, or deliverable in the lead.
+3. A higher-priority instruction or actual runtime constraint prevents the bounded assignment: for example no callable worker facility, a prohibited spawn, or no useful independent lead work where the runtime requires it. Do not manufacture busywork, spawn a placeholder, or create a separate user-visible task to bypass the constraint. Reuse or sequence an existing eligible worker before treating a temporary capacity limit as a blocker. If permitted direct execution is necessary to continue the authorized task, state the concrete limitation and the narrow work taken over. Preserve any unavailable required independent-review gate.
+4. The lead may make a clearly mechanical local edit under [the mechanical-edit criteria](#5-review-without-diluting-judgment), with an owner check of the final diff and relevant automated checks. Stricter project gates still apply. If inspection or checks leave behavior or interface preservation uncertain, route the work through the normal worker and independent-review path before proceeding.
+5. The user explicitly requests direct execution for the particular packet.
+
+Apply the rest of this skill only where the task needs its engineering workflow. Routine delegation does not require a durable persona, plan, assignment ledger, or extra approval. Mandatory independent reviews and project evidence gates remain separate from implementation ownership.
 
 ## 1. Establish the evidence and finish line
 
@@ -23,7 +43,7 @@ When a new user message steers ongoing work, preserve the original objective, in
 
 ## 2. Choose design and planning depth
 
-- **Direct implementation:** local, reversible work inside established responsibilities with clear acceptance. No durable design or plan is needed. Logic changes still require independent code review.
+- **Bounded implementation:** reversible work inside established responsibilities with clear acceptance. Apply the lead/worker policy to choose the implementer. No durable design or plan is needed. Logic changes still require independent code review.
 - **Durable plan:** material multi-module or cross-platform work, coordinated migration/deletion affecting consumers or rollback, multiple checkpoints/implementers, handoffs, or work spanning sessions. Read [implementation-planning.md](references/protocols/implementation-planning.md).
 - **Architecture decision and execution plan:** material changes to ownership, public contracts, persistence, lifecycle/concurrency, shared/platform responsibility, safety/security/privacy, migration strategy, or credible scale/cost behavior. Read [design-first.md](references/protocols/design-first.md). Resolve architecture before detailed implementation tasks. A medium change may use one canonical document with design and execution sections; use separate artifacts when depth or handoffs justify them.
 
@@ -66,13 +86,13 @@ Select one primary protocol for the phase and at most one overlay for a distinct
 
 Use [red-team.md](references/protocols/red-team.md) for a concrete adversarial risk, [pre-mortem.md](references/protocols/pre-mortem.md) for a fragile operational cutover, and [steelman.md](references/protocols/steelman.md) for a serious disputed alternative when their judgment can change the decision or the user requests them. They do not activate automatically from a public feature, API, deploy, or the word “important.”
 
-Read [model-selection.md](references/protocols/model-selection.md) at meaningful dispatch or model-choice boundaries. Use the least costly path confidently capable of meeting the quality requirement; **when suitability is uncertain, favor capability**. Prefer direct tools for deterministic work and process waits. Delegate concrete independent work when its benefit justifies coordination, and obtain required independent reviews. Choose model and supported reasoning effort separately; do not route by file count or persona title. Do not claim a named profile or parent-model switch works unless the runtime exposes and verifies it.
+Read [model-selection.md](references/protocols/model-selection.md) at meaningful dispatch or model-choice boundaries. It owns capability, effort, cost, context, and supported runtime selection. Apply the lead/worker policy above to execution ownership and its narrow exceptions; do not substitute a coordination-cost preference for that policy.
 
-Explicit personas are useful for specialist judgment or multiple decision owners, not a prerequisite for routine work. Team-management owns conditional role administration; model policy lives here. Read each selected reference once per artifact cycle and only reread for a material change.
+Explicit personas are useful for specialist judgment or multiple decision owners, not a prerequisite for routine work. Team-management owns conditional role administration. Read each selected reference once per artifact cycle and only reread for a material change.
 
 ## 5. Review without diluting judgment
 
-**Every code change requires independent review except clearly mechanical edits.** Formatting, comments, and tool-assisted local renames qualify only when behavior and interfaces are preserved with no material risk. Small tested logic changes are not exempt. Dependencies, CI permissions, public interfaces, persistence, concurrency, security, and device control require independent review even for one line. Behavior-changing instruction/configuration changes receive independent review too; ordinary prose edits need an owner check unless consequential policy or factual risk warrants more.
+**Every code change requires independent review except clearly mechanical edits.** A clearly mechanical edit is local and demonstrably preserves both behavior and interfaces with no material risk, such as fixing a typo in a non-normative comment or renaming a private local variable with verified references. Small tested logic changes are not exempt. Dependencies, CI permissions, public interfaces, persistence, concurrency, security, and device control require independent review even for one line. Behavior-changing instruction/configuration changes receive independent review too; ordinary prose edits need an owner check unless consequential policy or factual risk warrants more.
 
 An **owner check** is the implementing agent's final-diff inspection of scope, references, intended result, unintended behavior, and obsolete remnants, plus relevant automated checks. It is not independent review. If mechanical status is uncertain, request independent review.
 
@@ -80,7 +100,7 @@ Default to one capable independent reviewer for a coherent change or architectur
 
 Give the reviewer the current artifact, baseline, affected boundaries, acceptance evidence, and constraints. Require evidence-backed decision-changing findings and permit a no-findings verdict. Use a compact receipt: reviewed artifact/revision, reviewer/lane, independence, verdict, evidence and gaps; add hashes or stable blocker IDs when exact handoff/follow-up requires them. Never count multiple personas in one execution as independent reviews.
 
-Verify findings before fixing them. Resolve blockers or reject them with evidence; optional suggestions do not expand scope by default. Mechanical/editorial corrections need no independent re-review; behavior changes get lane-specific delta review. Repeat a full review only after material scope, architecture, risk, or evidence-contract change.
+Verify findings before fixing them. Resolve blockers or reject them with evidence; optional suggestions do not expand scope by default. Clearly mechanical follow-ups receive an owner check. Behavior changes get lane-specific delta review. Repeat a full review only after material scope, architecture, risk, or evidence-contract change.
 
 After two passes with no new decisive evidence, stop repetitive review. With unresolved blockers, perform only a bounded **non-production** evidence probe outside the blocked boundary under the feasibility-spike rule in design-first, or escalate the specific decision. Review time spent and reversibility never waive blockers. If independent review is unavailable, preserve a review-pending handoff; do not present self-review as independence or silently claim completion.
 
@@ -88,7 +108,7 @@ After two passes with no new decisive evidence, stop repetitive review. With unr
 
 Use focused behavior checks and affected builds while iterating. Tests should detect a meaningful defect or protect a changed invariant; avoid mirroring implementation or mocking away the affected boundary. Do not add tests for reversible low-impact edits without a useful behavioral question.
 
-Run broader checks at the coherent candidate/checkpoint boundary when changed boundaries, risks, or repository gates require them. Once sufficient checks pass, repeat only after relevant changes, failures, or unresolved concerns invalidate confidence. Separate patch failures from pre-existing failures; do not silently broaden into unrelated repairs.
+Before adding an expensive test or review pass, identify the decision its result could change or the acceptance claim a required gate must establish. Reuse evidence that still supports the claim for the affected path, candidate, and conditions. Repeat only checks or review lanes affected by a relevant change or failure, needed to resolve a named risk, or required for the candidate. Share this reasoning in existing working notes when useful. Separate patch failures from pre-existing failures and keep unrelated repairs outside the task.
 
 For changed lifecycle, event, concurrency, or ownership handoffs, trace whether the side effect actually crosses the new boundary. For actuator/safety work, verify applicable device/command identity, neutralization on pause/finish/background/disconnect/ownership loss, fail-closed behavior, and no writes after the terminal fence. Preserved safety code does not prove it is still invoked.
 
