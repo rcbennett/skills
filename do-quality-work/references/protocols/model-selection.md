@@ -11,7 +11,7 @@ The [main skill](../../SKILL.md) owns workflow and review gates. Select the rout
 | Work | Default route | Escalate when |
 |---|---|---|
 | Process/build waiting or deterministic status retrieval | Direct tool and bounded completion wait; no monitor agent | Failure, credible stall, or unexpected state needs judgment |
-| Clear extraction, structured summary, mechanical transformation | Lightweight model with low supported reasoning if tools alone are insufficient | Ambiguity, conflicting evidence, unreliable output |
+| Extraction or summarization that produces an authored deliverable | Assigned lightweight worker with low supported reasoning when confidently sufficient. Use tools for deterministic portions. | Ambiguity, conflicting evidence, unreliable output |
 | Established-pattern implementation with clear acceptance | Balanced coding model, usually medium reasoning | Hidden coupling, changed ownership/contracts, uncertain failure handling |
 | Ordinary independent code review | Fresh capable coding reviewer with enough effort to trace the behavior | Architecture or specialist risk needs greater capability |
 | Architecture, substantial refactor, uncertain diagnosis | More capable model with high reasoning | Especially demanding unresolved reasoning justifies greater effort |
@@ -29,9 +29,9 @@ Do not assume named profile selection, a model change for the running parent, or
 
 Create persistent worker profiles only when requested or justified by recurring work and effective selection can be tested. Preserve existing account/provider settings. Do not weaken permissions, restore credentials, or add a paid service merely to make routing work.
 
-## Delegate only when it helps
+## Execute under the lead/worker policy
 
-Use independent execution for required reviews and bounded parallel tasks whose expected benefit exceeds dispatch and integration cost. Avoid several scouts repeating a search that one tool call answers. Keep one integration owner, distinct lanes, and concise evidence-backed results. Do not make the parent redo each worker's entire investigation; inspect the evidence needed for integration and consequential claims.
+The [main skill's lead/worker execution policy](../../SKILL.md#lead-and-worker-execution) determines who executes and defines the only direct-execution exceptions. This protocol selects the most cost-effective capable model for that permitted route; it does not exempt a worker assignment because the lead could implement it cheaply. Keep one integration owner, non-overlapping worker responsibilities, and concise evidence-backed results. Avoid duplicate scouts, recursive dispatch, and making the lead redo a worker's entire investigation. Inspect evidence needed for integration and consequential claims.
 
 Reviewer competence comes before model diversity. Prefer a different capable model when available, but never downgrade a reviewer merely to get another model name. Distinct personas within one execution are not independent reviews. An unavailable alternate vendor is not by itself a reason to stop if a suitable independent execution is available.
 

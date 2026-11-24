@@ -45,7 +45,7 @@ Create and approve a durable design before implementation when work introduces o
 - system-wide pattern such as observability, error handling, configuration, or dependency injection; or
 - a large refactor whose success depends on assigning responsibilities differently.
 
-If the work stays inside an approved boundary and preserves its contracts, use the local design check and then choose direct implementation or durable planning under the planning gate.
+If the work stays inside an approved boundary and preserves its contracts, use the local design check and then choose bounded implementation or durable planning under the planning gate.
 
 ## Start from the current architecture
 

@@ -26,6 +26,6 @@ Use a compact receipt with reviewed artifact/revision, reviewer/lane, independen
 
 The owner verifies factual claims under [verifying-claims.md](verifying-claims.md). Fix demonstrated blockers or reject them with evidence. Do not reflexively accept findings or expand scope for optional cleanup. Return material ownership, contract, authority, or finish-line changes to design acceptance.
 
-Use lane-specific delta review for behavior-changing fixes. Mechanical/editorial follow-ups need an owner check; full review repeats only for a material change to scope, architecture, risk, or evidence contract.
+Use lane-specific delta review for behavior-changing fixes. Apply the [decision and evidence-reuse criteria](../../SKILL.md#6-verify-proportionately) before adding an expensive review pass. Clearly mechanical follow-ups receive an owner check under the main skill. Repeat a full review only for a material change to scope, architecture, risk, or evidence contract.
 
 After two passes without new decisive evidence, stop repeating the review. An unresolved blocker permits only a bounded non-production probe outside the blocked boundary under [design-first.md](design-first.md), or escalation. It never permits production implementation or acceptance merely because the proposed slice is reversible.

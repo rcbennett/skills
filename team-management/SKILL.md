@@ -9,7 +9,7 @@ description: Assign specialist work, create or maintain project personas, assess
 
 Respect current user scope and authorization. Use [do-quality-work](../do-quality-work/SKILL.md) for engineering design, review gates, verification, model choice, and completion; this skill owns role fit and team administration. It does not add another review matrix or override safety/project gates.
 
-- **Execute or route:** the current agent is the default accountable owner. Reuse relevant personas when specialist judgment or multiple decision owners matter. A bounded role brief can supply one-off expertise; no persistent persona, executive file, roster conversion, or research campaign is required merely to begin work.
+- **Execute or route:** the top-level lead is the accountable integration owner; assigned workers own execution under [do-quality-work's lead/worker policy](../do-quality-work/SKILL.md#lead-and-worker-execution). Reuse relevant personas when specialist judgment or multiple decision owners matter. A bounded role brief can supply one-off expertise; no persistent persona, executive file, roster conversion, or research campaign is required merely to begin work.
 - **Assess:** inspect the current roster and evidence and report findings. A review or Talent Planning request alone does not authorize persona edits, file migration, hiring, or learning writes. Recommend precise changes without applying them unless the user also asks to improve or update the team.
 - **Update or reorganize:** when authorized, edit only the affected roles and references. Create, merge, refocus, or retire roles according to real capability needs. Apply requested improvements directly rather than requesting the same authorization again.
 
@@ -23,7 +23,7 @@ For a substantive assignment, specify the expected result, boundary, relevant ev
 
 Use [model-selection.md](../do-quality-work/references/protocols/model-selection.md) for capability, reasoning effort, context, and total-cost tradeoffs. When suitability is uncertain, favor a more capable model. Required independent review may use a fresh capable agent or an authorized external reviewer. Do not route review to a weak model merely because it is cheap or different.
 
-Delegate only concrete independent work whose benefit justifies coordination, plus required reviews. Routine deterministic steps and process waiting should normally use direct tools. A missing persistent role does not imply a missing runtime capability; use a clear temporary brief. Create a durable role only when requested or when an authorized team update addresses a demonstrated recurring gap.
+Follow do-quality-work's lead/worker execution policy, including its narrow direct-execution exceptions and non-recursion rule. This skill supplies role fit and sufficient briefs; it does not add a coordination-cost exception. A missing persistent role does not imply a missing runtime capability; use a clear temporary brief. Create a durable role only when requested or when an authorized team update addresses a demonstrated recurring gap.
 
 ## Research when it changes role guidance
 
